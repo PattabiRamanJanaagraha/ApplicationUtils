@@ -34,10 +34,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
-import dev.pattabiraman.webserviceutils.callback.OnButtonClick;
-import dev.pattabiraman.webserviceutils.model.HTTPCodeModel;
-import dev.pattabiraman.webserviceutils.model.SelectedImageModel;
-import dev.pattabiraman.webserviceutils.webservice.LruBitmapCache;
+import dev.pattabiraman.apputils.webserviceutils.callback.OnButtonClick;
+import dev.pattabiraman.apputils.webserviceutils.model.HTTPCodeModel;
+import dev.pattabiraman.apputils.webserviceutils.model.SelectedImageModel;
+import dev.pattabiraman.apputils.webserviceutils.webservice.LruBitmapCache;
+import dev.pattabiraman.webserviceutils.R;
 
 public class PluginAppUtils {
     private RequestQueue mRequestQueue;
@@ -68,18 +69,14 @@ public class PluginAppUtils {
     public ImageLoader getImageLoader() {
         getRequestQueue();
         if (mImageLoader == null) {
-            mImageLoader = new ImageLoader(this.mRequestQueue,
-                    new LruBitmapCache());
+            mImageLoader = new ImageLoader(this.mRequestQueue, new LruBitmapCache());
         }
         return this.mImageLoader;
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
-        req.setRetryPolicy(new DefaultRetryPolicy(
-                PluginAppUtils.MY_SOCKET_TIMEOUT_MS,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        req.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         getRequestQueue().add(req);
     }
@@ -95,8 +92,7 @@ public class PluginAppUtils {
         }
     }
 
-    public void handleVolleyError(final AppCompatActivity act,
-                                  final VolleyError volleyError) {
+    public void handleVolleyError(final AppCompatActivity act, final VolleyError volleyError) {
         NetworkResponse response = volleyError.networkResponse;
         JSONObject responseObject = new JSONObject();
         StringBuilder errors = new StringBuilder();
@@ -113,8 +109,7 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_SUCCESS_OK_:
                     break;
                 case HTTPCodeModel.HTTP_NOT_FOUND:
-                    PluginAppUtils.getInstance(activity).showToast(act,
-                            responseObject.optString("message"));
+                    PluginAppUtils.getInstance(activity).showToast(act, responseObject.optString("message"));
                     break;
                 case HTTPCodeModel.HTTP_VALIDATION_ERROR:
                     try {
@@ -151,19 +146,17 @@ public class PluginAppUtils {
                                 errors = new StringBuilder("Error Parsing Failed!");
                             }
                         }
-                        PluginAppUtils.getInstance(activity)
-                                .showAlert(act, responseObject.optString("message"), String.valueOf(errors), false,
-                                        new OnButtonClick() {
-                                            @Override
-                                            public void onPositiveButtonClicked(DialogInterface dialogInterface) {
+                        PluginAppUtils.getInstance(activity).showAlert(act, responseObject.optString("message"), String.valueOf(errors), false, new OnButtonClick() {
+                            @Override
+                            public void onPositiveButtonClicked(DialogInterface dialogInterface) {
 
-                                            }
+                            }
 
-                                            @Override
-                                            public void onNegativeButtonClicked(DialogInterface dialogInterface) {
+                            @Override
+                            public void onNegativeButtonClicked(DialogInterface dialogInterface) {
 
-                                            }
-                                        });
+                            }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -171,8 +164,7 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_TOO_MANY_ATTEMPTS:
                     errors = new StringBuilder(responseObject.optString("message"));
                     if (!TextUtils.isEmpty(errors) && errors.toString().trim().length() > 0) {
-                        PluginAppUtils.getInstance(activity)
-                                .showToast(act, errors.toString());
+                        PluginAppUtils.getInstance(activity).showToast(act, errors.toString());
                     }
                     break;
                 case HTTPCodeModel.HTTP_BAD_REQUEST:
@@ -182,8 +174,7 @@ public class PluginAppUtils {
                     break;
                 case HTTPCodeModel.HTTP_UNAUTHENTICATED:
                     new PluginAppUtils().cancelPendingRequests(PluginAppUtils.TAG);
-                    PluginAppUtils.getInstance(activity)
-                            .showToast(act, "Session Expired, Login again");
+                    PluginAppUtils.getInstance(activity).showToast(act, "Session Expired, Login again");
                     break;
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
                    /* PluginAppUtils.getInstance(activity).showToast(act,
@@ -193,8 +184,7 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_CONNECTION_TIME_OUT:
                 case HTTPCodeModel.HTTP_TIME_OUT:
                 case HTTPCodeModel.HTTP_UNKNOWN_ERROR:
-                    PluginAppUtils.getInstance(activity).showToast(act,
-                            "Poor internet connection");
+                    PluginAppUtils.getInstance(activity).showToast(act, "Poor internet connection");
                     break;
                 default:
                     errors = new StringBuilder(responseObject.optString("message") + "");
@@ -204,8 +194,7 @@ public class PluginAppUtils {
             }
         } else {
             if (volleyError.getMessage() != null) {
-                PluginAppUtils.getInstance(activity)
-                        .showToast(act, volleyError.getMessage());
+                PluginAppUtils.getInstance(activity).showToast(act, volleyError.getMessage());
             }
         }
     }
@@ -223,8 +212,7 @@ public class PluginAppUtils {
                 progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 progressDialog.setContentView(R.layout.inflate_view_loading);
                 progressDialog.setCancelable(false);
-                progressDialog.getWindow().setBackgroundDrawable(
-                        new ColorDrawable(Color.TRANSPARENT));
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 progressDialog.show();
             } else {
@@ -276,17 +264,13 @@ public class PluginAppUtils {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public void showAlert(final AppCompatActivity activity, final String title, final String message,
-                          final boolean isToShowNegativeButton, final
-                          OnButtonClick onButtonClick) {
+    public void showAlert(final AppCompatActivity activity, final String title, final String message, final boolean isToShowNegativeButton, final OnButtonClick onButtonClick) {
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
         ab.setTitle(title);
         ab.setMessage(message);
-        ab.setPositiveButton("Ok",
-                (dialogInterface, i) -> onButtonClick.onPositiveButtonClicked(dialogInterface));
+        ab.setPositiveButton("Ok", (dialogInterface, i) -> onButtonClick.onPositiveButtonClicked(dialogInterface));
         if (isToShowNegativeButton) {
-            ab.setNegativeButton("Cancel",
-                    (dialogInterface, i) -> onButtonClick.onNegativeButtonClicked(dialogInterface));
+            ab.setNegativeButton("Cancel", (dialogInterface, i) -> onButtonClick.onNegativeButtonClicked(dialogInterface));
         }
         ab.show();
     }

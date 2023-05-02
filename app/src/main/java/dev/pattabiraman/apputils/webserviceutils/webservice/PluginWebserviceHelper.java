@@ -1,6 +1,6 @@
 package dev.pattabiraman.apputils.webserviceutils.webservice;
 
-import static dev.pattabiraman.webserviceutils.model.HTTPCodeModel.HTTP_UNAUTHENTICATED;
+import static dev.pattabiraman.apputils.webserviceutils.model.HTTPCodeModel.HTTP_UNAUTHENTICATED;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,8 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.pattabiraman.webserviceutils.PluginAppUtils;
-import dev.pattabiraman.webserviceutils.callback.OnResponseListener;
+import dev.pattabiraman.apputils.webserviceutils.PluginAppUtils;
+import dev.pattabiraman.apputils.webserviceutils.callback.OnResponseListener;
 
 
 /**
