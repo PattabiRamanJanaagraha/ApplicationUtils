@@ -1,5 +1,12 @@
-package dev.pattabiraman.webserviceutils;
+/*
+ * Created by Pattabi Raman on 03/05/23, 2:08 PM
+ * Copyright (c) 2023 . All rights reserved.
+ * Last modified 02/05/23, 3:11 PM
+ */
 
+package dev.pattabiraman.utils;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -7,11 +14,12 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
- import android.widget.Toast;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,19 +39,22 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Objects;
 
-import dev.pattabiraman.webserviceutils.callback.OnButtonClick;
-import dev.pattabiraman.webserviceutils.model.HTTPCodeModel;
-import dev.pattabiraman.webserviceutils.model.SelectedImageModel;
-import dev.pattabiraman.webserviceutils.webservice.LruBitmapCache;
+import dev.pattabiraman.utils.model.HTTPCodeModel;
+import dev.pattabiraman.utils.model.SelectedImageModel;
+import dev.pattabiraman.webserviceutils.R;
+import dev.pattabiraman.utils.callback.OnButtonClick;
+import dev.pattabiraman.utils.webservice.LruBitmapCache;
 
 public class PluginAppUtils {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static PluginAppUtils mInstance;
-    public static final int MY_SOCKET_TIMEOUT_MS = 864000;
+
     public static final String TAG = PluginAppUtils.class.getSimpleName();
 
     private static AppCompatActivity activity;
@@ -77,7 +88,7 @@ public class PluginAppUtils {
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setRetryPolicy(new DefaultRetryPolicy(
-                PluginAppUtils.MY_SOCKET_TIMEOUT_MS,
+                PluginAppConstant.MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
@@ -289,6 +300,25 @@ public class PluginAppUtils {
                     (dialogInterface, i) -> onButtonClick.onNegativeButtonClicked(dialogInterface));
         }
         ab.show();
+    }
+
+    public String getDate(long milliSeconds, String dateFormat) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
+
+    public Bitmap getBitmapFromURI(AppCompatActivity activity, final Uri imageURI) {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageURI);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
     public void traceLog(final String key, final String value) {
