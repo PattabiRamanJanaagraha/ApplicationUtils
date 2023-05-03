@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <!--internet-->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--storage-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!--camera-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--location-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:exported="false"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name="dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat" />
+
+        <!--<provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.ichangemycityjanaagraha.core.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>-->
+    </application>
 </manifest>

@@ -1,4 +1,10 @@
-package dev.pattabiraman.webserviceutils.webservice;
+/*
+ * Created by Pattabi Raman on 03/05/23, 2:08 PM
+ * Copyright (c) 2023 . All rights reserved.
+ * Last modified 02/05/23, 3:11 PM
+ */
+
+package dev.pattabiraman.utils.webservice;
 
 /**
  * Created by pattabi.raman on 03-08-2017.

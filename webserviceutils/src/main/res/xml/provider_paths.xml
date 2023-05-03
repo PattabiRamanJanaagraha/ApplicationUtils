@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+    <external-path
+        name="my_images"
+        path="Pictures" />
+    <paths>
+        <external-path
+            name="external_files"
+            path="." />
+    </paths>
+    <paths>
+        <cache-path
+            name="shared_images"
+            path="0/" />
+    </paths>
+</paths>

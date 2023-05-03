@@ -1,6 +1,10 @@
-package dev.pattabiraman.webserviceutils.webservice;
+/*
+ * Created by Pattabi Raman on 03/05/23, 2:08 PM
+ * Copyright (c) 2023 . All rights reserved.
+ * Last modified 02/05/23, 3:11 PM
+ */
 
-import static dev.pattabiraman.webserviceutils.model.HTTPCodeModel.HTTP_UNAUTHENTICATED;
+package dev.pattabiraman.utils.webservice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,8 +26,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.pattabiraman.webserviceutils.PluginAppUtils;
-import dev.pattabiraman.webserviceutils.callback.OnResponseListener;
+import dev.pattabiraman.utils.PluginAppConstant;
+import dev.pattabiraman.utils.PluginAppUtils;
+import dev.pattabiraman.utils.callback.OnResponseListener;
+import dev.pattabiraman.utils.model.HTTPCodeModel;
 
 
 /**
@@ -120,7 +126,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseFailure(response);
                         PluginAppUtils.getInstance(activity).showToast(activity, e.getMessage());
                     }
-                } else if (response.optInt("httpCode") == HTTP_UNAUTHENTICATED) {
+                } else if (response.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
                     try {
                         onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", response.optInt("httpCode")));
@@ -181,7 +187,7 @@ public class PluginWebserviceHelper {
             }
 
         };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
     }
@@ -239,7 +245,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
@@ -291,7 +297,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
@@ -316,7 +322,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseFailure(response);
 //                                     PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
                     }
-                } else if (response.optInt("httpCode") == HTTP_UNAUTHENTICATED) {
+                } else if (response.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
                     try {
                         onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", response.optInt("httpCode")));
@@ -426,7 +432,7 @@ public class PluginWebserviceHelper {
 
 
         };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         jsonObjReq.setShouldCache(false);
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
@@ -453,7 +459,7 @@ public class PluginWebserviceHelper {
                         e.printStackTrace();
 //                   PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
                     }
-                } else if (mJsonObject.optInt("httpCode") == HTTP_UNAUTHENTICATED) {
+                } else if (mJsonObject.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, mJsonObject.optString("message"));
                     try {
                         onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", mJsonObject.optInt("httpCode")));
@@ -509,7 +515,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppUtils.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
