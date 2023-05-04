@@ -16,15 +16,17 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +42,7 @@ import dev.pattabiraman.utils.callback.OnTaskCompleted;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.permissionutils.GetPermissionResult;
 import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
+import dev.pattabiraman.webserviceutils.R;
 
 /**
  * @author Pattabi
@@ -64,37 +67,54 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
     }
 
     private void showAlert() {
-        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-        ab.setMessage("Use below options to pick an image");
-        ab.setPositiveButton("Camera", (dialog, which) -> {
-            permissionsRequired.clear();
-            permissionsRequired.add(Manifest.permission.CAMERA);
-            checkForStoragePermission(new OnTaskCompleted() {
-                @Override
-                public void onTaskSuccess(JSONObject jsonObject) {
-                    openCamera();
-                }
+        final BottomSheetDialog ab = new BottomSheetDialog(activity);
+        ab.setContentView(R.layout.inflate_image_picker_dialog);
+        AppCompatTextView tvCamera = ab.findViewById(R.id.tvCamera);
+        AppCompatTextView tvGallery = ab.findViewById(R.id.tvGallery);
+        AppCompatTextView tvCancel = ab.findViewById(R.id.tvCancel);
 
-                @Override
-                public void onTaskFailure(VolleyError error) {
+        if (tvCamera != null) {
+            tvCamera.setOnClickListener(v -> {
+                permissionsRequired.clear();
+                permissionsRequired.add(Manifest.permission.CAMERA);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                    permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                checkForStoragePermission(new OnTaskCompleted() {
+                    @Override
+                    public void onTaskSuccess(JSONObject jsonObject) {
+                        openCamera();
+                    }
 
-                }
+                    @Override
+                    public void onTaskFailure(VolleyError error) {
+
+                    }
+                });
             });
-        });
-        ab.setNegativeButton("Gallery", (dialog, which) -> {
-            checkForStoragePermission(new OnTaskCompleted() {
-                @Override
-                public void onTaskSuccess(JSONObject jsonObject) {
-                    openGallery();
-                }
+        }
 
-                @Override
-                public void onTaskFailure(VolleyError error) {
+        if (tvGallery != null) {
+            tvGallery.setOnClickListener(v -> {
+                checkForStoragePermission(new OnTaskCompleted() {
+                    @Override
+                    public void onTaskSuccess(JSONObject jsonObject) {
+                        openGallery();
+                    }
 
-                }
+                    @Override
+                    public void onTaskFailure(VolleyError error) {
+
+                    }
+                });
             });
-        });
-
+        }
+        if (tvCancel != null) {
+            tvCancel.setOnClickListener(v -> {
+                ab.dismiss();
+                activity.finish();
+            });
+        }
+        ab.setCancelable(false);
         ab.show();
     }
 
@@ -148,7 +168,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                 } else if (resultCode == RESULT_CANCELED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, "You have cancelled image selection");
                 } else {
-                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image");
+//                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image");
                 }
                 break;
             case OPEN_SINGLE_MEDIA_PICKER:
@@ -157,7 +177,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     setDetailsOfImage(uri);
 //                    doCrop(uri);
                 } else {
-                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
+//                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
                 }
                 break;
             case CROP_PIC_REQUEST_CODE:
@@ -171,6 +191,8 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
                 }
                 break;
+            default:
+                activity.finish();
 
         }
     }
