@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -44,11 +45,11 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Objects;
 
+import dev.pattabiraman.utils.callback.OnButtonClick;
 import dev.pattabiraman.utils.model.HTTPCodeModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
-import dev.pattabiraman.webserviceutils.R;
-import dev.pattabiraman.utils.callback.OnButtonClick;
 import dev.pattabiraman.utils.webservice.LruBitmapCache;
+import dev.pattabiraman.webserviceutils.R;
 
 public class PluginAppUtils {
     private RequestQueue mRequestQueue;
@@ -65,7 +66,9 @@ public class PluginAppUtils {
     }
 
     public void showToast(final AppCompatActivity activity, final String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        final Toast toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     public RequestQueue getRequestQueue() {

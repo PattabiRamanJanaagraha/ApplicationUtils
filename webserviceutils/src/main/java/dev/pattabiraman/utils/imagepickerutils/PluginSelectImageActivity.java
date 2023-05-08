@@ -19,7 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.Toast;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,14 +46,24 @@ import dev.pattabiraman.webserviceutils.R;
 
 /**
  * @author Pattabi
- * @apiNote MUST DO:<br/>
- * SEND requestCode 101 in intent putExtra
- * DECLARE<br/> dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
+ * @apiNote MUST DO BEFORE CALLING THIS ACTIVITY:<br/>
+ * SEND below params in Intent putExtra:<br/><br/>
+ * • intentObj.putExtra("requestCode", 101);  <br/><br/>
+ * • intentObj.putExtra("clickTypeAutomate", Integer); <br/> -> refer  PluginAppConstant.CLICK_TYPE_CAMERA / PluginAppConstant.CLICK_TYPE_GALLERY / PluginAppConstant.CLICK_TYPE_CANCEL / PluginAppConstant.CLICK_TYPE_NONE  <br/><br/>
+ * • intentObj.putExtra("cameraBtnText", String); <br/> -> camera button name <br/><br/>
+ * • intentObj.putExtra("galleryBtnText", String); <br/> -> gallery button name <br/><br/>
+ * • intentObj.putExtra("cancelBtnText", String); <br/> -> cancel button name <br/><br/>
+ * • intentObj.putExtra("isToShowDrawableStart", Boolean); <br/> -> Whether to show drawables for all CTA buttons <br/><br/>
+ * DECLARE activity in Manifest:<br/>
+ * • dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity <br/>
  **/
 public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
     private AppCompatActivity activity;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     Uri fileUri;
+    private String cameraBtnText, galleryBtnText, cancelBtnText;
+    private boolean isToShowDrawableStart;
+    private int clickTypeAutomate = PluginAppConstant.CLICK_TYPE_NONE;
 
     private final List<String> permissionsRequired = new ArrayList<>();
     private int requestCodeCallingClass;
@@ -63,37 +73,55 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         activity = PluginSelectImageActivity.this;
         requestCodeCallingClass = getIntent().getExtras().getInt("requestCode");
-        showAlert();
+        cameraBtnText = getIntent().getExtras().getString("cameraBtnText");
+        galleryBtnText = getIntent().getExtras().getString("galleryBtnText");
+        cancelBtnText = getIntent().getExtras().getString("cancelBtnText");
+        isToShowDrawableStart = getIntent().getExtras().getBoolean("isToShowDrawableStart");
+        clickTypeAutomate = getIntent().getExtras().getInt("clickTypeAutomate");
+
+        if (clickTypeAutomate == PluginAppConstant.CLICK_TYPE_NONE)
+            showAlert();
+        else {
+            switch (clickTypeAutomate) {
+                case PluginAppConstant.CLICK_TYPE_CAMERA:
+                    checkForCameraPermission();
+                    break;
+                case PluginAppConstant.CLICK_TYPE_GALLERY:
+                    openGallery();
+                    break;
+            }
+        }
     }
 
     private void showAlert() {
         final BottomSheetDialog ab = new BottomSheetDialog(activity);
         ab.setContentView(R.layout.inflate_image_picker_dialog);
-        AppCompatTextView tvCamera = ab.findViewById(R.id.tvCamera);
-        AppCompatTextView tvGallery = ab.findViewById(R.id.tvGallery);
-        AppCompatTextView tvCancel = ab.findViewById(R.id.tvCancel);
+        final AppCompatTextView tvCamera = ab.findViewById(R.id.tvCamera);
+        final AppCompatTextView tvGallery = ab.findViewById(R.id.tvGallery);
+        final AppCompatTextView tvCancel = ab.findViewById(R.id.tvCancel);
 
         if (tvCamera != null) {
+            /*customize name*/
+            if (!TextUtils.isEmpty(cameraBtnText))
+                tvCamera.setText(cameraBtnText);
+
+            /*show/hide drawableStart*/
+            if (!isToShowDrawableStart) {
+                tvCamera.setCompoundDrawables(null, null, null, null);
+            }
             tvCamera.setOnClickListener(v -> {
-                permissionsRequired.clear();
-                permissionsRequired.add(Manifest.permission.CAMERA);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-                    permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                checkForStoragePermission(new OnTaskCompleted() {
-                    @Override
-                    public void onTaskSuccess(JSONObject jsonObject) {
-                        openCamera();
-                    }
-
-                    @Override
-                    public void onTaskFailure(VolleyError error) {
-
-                    }
-                });
+                checkForCameraPermission();
             });
         }
 
         if (tvGallery != null) {
+            /*customise name*/
+            if (!TextUtils.isEmpty(galleryBtnText))
+                tvGallery.setText(galleryBtnText);
+            /*show/hide drawableStart*/
+            if (!isToShowDrawableStart) {
+                tvGallery.setCompoundDrawables(null, null, null, null);
+            }
             tvGallery.setOnClickListener(v -> {
                 checkForStoragePermission(new OnTaskCompleted() {
                     @Override
@@ -109,6 +137,13 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
             });
         }
         if (tvCancel != null) {
+            /*customise name*/
+            if (!TextUtils.isEmpty(cancelBtnText))
+                tvCancel.setText(cancelBtnText);
+            /*show/hide drawableStart*/
+            if (!isToShowDrawableStart) {
+                tvCancel.setCompoundDrawables(null, null, null, null);
+            }
             tvCancel.setOnClickListener(v -> {
                 ab.dismiss();
                 activity.finish();
@@ -116,6 +151,25 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         }
         ab.setCancelable(false);
         ab.show();
+
+    }
+
+    private void checkForCameraPermission() {
+        permissionsRequired.clear();
+        permissionsRequired.add(Manifest.permission.CAMERA);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        checkForStoragePermission(new OnTaskCompleted() {
+            @Override
+            public void onTaskSuccess(JSONObject jsonObject) {
+                openCamera();
+            }
+
+            @Override
+            public void onTaskFailure(VolleyError error) {
+
+            }
+        });
     }
 
 
@@ -169,6 +223,9 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     PluginAppUtils.getInstance(activity).showToast(activity, "You have cancelled image selection");
                 } else {
 //                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image");
+                    if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
+                        activity.finish();
+                    }
                 }
                 break;
             case OPEN_SINGLE_MEDIA_PICKER:
@@ -178,6 +235,9 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
 //                    doCrop(uri);
                 } else {
 //                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
+                    if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
+                        activity.finish();
+                    }
                 }
                 break;
             case CROP_PIC_REQUEST_CODE:
@@ -216,8 +276,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         catch (ActivityNotFoundException anfe) {
             // display an error message
             String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
+            PluginAppUtils.getInstance(activity).showToast(activity, errorMessage);
         }
     }
 

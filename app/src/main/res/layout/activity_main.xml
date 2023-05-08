@@ -50,6 +50,16 @@
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBottomSheet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bottom Sheet Image Picker"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 

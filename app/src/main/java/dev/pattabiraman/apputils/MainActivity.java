@@ -6,11 +6,14 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import dev.pattabiraman.apputils.databinding.ActivityMainBinding;
+import dev.pattabiraman.apputils.databinding.InflateBottomsheetImagePickerDialogBinding;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity;
@@ -31,9 +34,41 @@ public class MainActivity extends AppCompatActivity {
         binding.runWebService.setOnClickListener(V -> {
             runWebservice();
         });
+        /*first approach - show bottomsheet dialog from library referenced layout*/
         binding.pickImage.setOnClickListener(v -> {
-            startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101), 101);
+            startActivityForResult(new Intent(activity, PluginSelectImageActivity.class)
+                    .putExtra("requestCode", 101)
+                    .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_NONE)
+                    .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra("isToShowDrawableStart", true), 101);
         });
+        /*second approach - directly send flag to pick (automatic CTA)*/
+        binding.btnBottomSheet.setOnClickListener(v -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+            InflateBottomsheetImagePickerDialogBinding imagePickerDialogBinding = InflateBottomsheetImagePickerDialogBinding.inflate(getLayoutInflater());
+            bottomSheetDialog.setContentView(imagePickerDialogBinding.getRoot());
+            bottomSheetDialog.setCancelable(false);
+            imagePickerDialogBinding.tvCamera.setOnClickListener(tvCameraView -> {
+                bottomSheetDialog.dismiss();
+                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101)
+                        .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_CAMERA)
+                        .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra
+                                ("isToShowDrawableStart", true), 101);
+
+            });
+            imagePickerDialogBinding.tvGallery.setOnClickListener(tvCameraView -> {
+                bottomSheetDialog.dismiss();
+                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101)
+                        .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_GALLERY)
+                        .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra
+                                ("isToShowDrawableStart", true), 101);
+            });
+            imagePickerDialogBinding.tvCancel.setOnClickListener(tvCameraView -> {
+                bottomSheetDialog.dismiss();
+
+            });
+            bottomSheetDialog.show();
+        });
+
 
     }
 
