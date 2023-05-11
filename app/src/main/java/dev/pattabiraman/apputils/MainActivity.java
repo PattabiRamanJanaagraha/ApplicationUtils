@@ -19,6 +19,7 @@ import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.PluginWebserviceHelper;
+import dev.pattabiraman.utils.AppHelperMethods;
 
 public class MainActivity extends AppCompatActivity {
     private AppCompatActivity activity;
@@ -32,9 +33,12 @@ public class MainActivity extends AppCompatActivity {
         activity = MainActivity.this;
 
         binding.runWebService.setOnClickListener(V -> {
+            /**
+             * @apiNote set this method to true to trace log. if this method is not called, by default no traces are logged in logcat view*/
+            AppHelperMethods.getInstance(activity).setToTraceLog(true);
             runWebservice();
         });
-        /*first approach - show bottomsheet dialog from library referenced layout*/
+        /**@apiNote first approach - show bottomsheet dialog from library referenced layout*/
         binding.pickImage.setOnClickListener(v -> {
             startActivityForResult(new Intent(activity, PluginSelectImageActivity.class)
                     .putExtra("requestCode", 101)
@@ -83,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void runWebservice() {
         final String url = "https://www.ichangemycity.com/android/api/icmyc/v1/api.php?cityId=1&userId=390610&channel=icmyc-citizen-android";
-        HashMap<String, String> requestParams = new HashMap<>();
-
-        PluginWebserviceHelper.getInstance().runWebService(activity, PluginWebserviceHelper.METHOD_GET, url, requestParams, new OnResponseListener() {
+         HashMap<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("Accept", "application/json");
+        PluginWebserviceHelper.getInstance().runWebService(activity, PluginWebserviceHelper.METHOD_GET, url, null, new OnResponseListener() {
             @Override
             public void OnResponseFailure(JSONObject response) {
 
@@ -95,6 +99,6 @@ public class MainActivity extends AppCompatActivity {
             public void OnResponseSuccess(JSONObject response) {
                 binding.tvResponse.setText(response.toString());
             }
-        }, false, PluginWebserviceHelper.HEADER_TYPE_NORMAL);
+        }, false, requestHeaders);
     }
 }

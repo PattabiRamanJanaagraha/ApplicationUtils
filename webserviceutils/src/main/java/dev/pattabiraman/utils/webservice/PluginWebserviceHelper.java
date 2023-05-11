@@ -78,35 +78,35 @@ public class PluginWebserviceHelper {
      * @param isToShowProgressDialog isToShowProgressDialog boolean-value if needed to show loader
      */
 
-    public void runWebService(final AppCompatActivity activity, final int methodType, final String url, HashMap<String, String> params, OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    public void runWebService(final AppCompatActivity activity, final int methodType, final String url, HashMap<String, String> params, OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         PluginAppUtils.getInstance(activity).traceLog("requestURL", url);
         if (params != null)
             PluginAppUtils.getInstance(activity).traceLog("requestParams", params.toString());
         switch (methodType) {
             case METHOD_GET:
-                doGet(activity, url, onResponseListener, isToShowProgressDialog, headerType);
+                doGet(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
                 break;
             case METHOD_POST:
 
-                doPost(activity, url, params, onResponseListener, isToShowProgressDialog, headerType);
+                doPost(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
                 break;
             case METHOD_PUT:
 
-                doPut(activity, url, params, onResponseListener, isToShowProgressDialog, headerType);
+                doPut(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
                 break;
             case METHOD_PATCH:
-                doPatch(activity, url, onResponseListener, isToShowProgressDialog, headerType);
+                doPatch(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
                 break;
             case METHOD_DELETE:
 
-                doDelete(activity, url, params, onResponseListener, isToShowProgressDialog, headerType);
+                doDelete(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
                 break;
             default:
                 break;
         }
     }
 
-    private static void doPatch(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    private static void doPatch(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
@@ -176,8 +176,6 @@ public class PluginWebserviceHelper {
              */
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("Accept", "application/json");
                 return requestHeaders;
             }
 
@@ -192,7 +190,7 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
     }
 
-    private void doPut(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    private void doPut(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
@@ -240,8 +238,6 @@ public class PluginWebserviceHelper {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("Accept", "application/json");
                 return requestHeaders;
             }
         };
@@ -249,7 +245,7 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
-    private void doDelete(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    private void doDelete(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
@@ -292,8 +288,6 @@ public class PluginWebserviceHelper {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("Accept", "application/json");
                 return requestHeaders;
             }
         };
@@ -301,7 +295,7 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
-    private static void doGet(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    private static void doGet(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
@@ -320,7 +314,7 @@ public class PluginWebserviceHelper {
                     } catch (Exception e) {
                         e.printStackTrace();
                         onResponseListener.OnResponseFailure(response);
-//                                     PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                                     AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     }
                 } else if (response.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
@@ -337,7 +331,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseFailure(response);
                     } catch (Exception e) {
                         e.printStackTrace();
-//                                     PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                                     AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     }
                 }
             } else {
@@ -346,7 +340,7 @@ public class PluginWebserviceHelper {
                     PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
                 } catch (Exception e) {
                     e.printStackTrace();
-//                                 PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                                 AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     onResponseListener.OnResponseFailure(response);
                 }
             }
@@ -424,8 +418,6 @@ public class PluginWebserviceHelper {
              */
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("Accept", "application/json");
                 return requestHeaders;
 
             }
@@ -439,7 +431,7 @@ public class PluginWebserviceHelper {
 
     }
 
-    private static void doPost(final AppCompatActivity activity, final String url, final HashMap<String, String> requestParams, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final int headerType) {
+    private static void doPost(final AppCompatActivity activity, final String url, final HashMap<String, String> requestParams, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
@@ -457,7 +449,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseSuccess(mJsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
-//                   PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                   AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     }
                 } else if (mJsonObject.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, mJsonObject.optString("message"));
@@ -474,7 +466,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseSuccess(mJsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
-//                   PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                   AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     }
                 } else {
                     try {
@@ -482,7 +474,7 @@ public class PluginWebserviceHelper {
                         onResponseListener.OnResponseFailure(mJsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
-//                             PluginAppUtils.getInstance(activity).showToast(activity,  e.getMessage());
+//                             AppHelperMethods.getInstance(activity).showToast(activity,  e.getMessage());
                     }
                 }
 
@@ -510,8 +502,6 @@ public class PluginWebserviceHelper {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> requestHeaders = new HashMap<>();
-                requestHeaders.put("Accept", "application/json");
                 return requestHeaders;
             }
         };

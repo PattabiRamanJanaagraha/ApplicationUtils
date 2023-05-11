@@ -200,7 +200,7 @@ public class PluginAppUtils {
                             .showToast(act, "Session Expired, Login again");
                     break;
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
-                   /* PluginAppUtils.getInstance(activity).showToast(act,
+                   /* AppHelperMethods.getInstance(activity).showToast(act,
                             responseObject.optString("message"));*/
                     PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
                     break;

@@ -1,4 +1,10 @@
-package dev.pattabiraman.webserviceutils;
+/*
+ * Created by Pattabi Raman on 11/05/23, 11:23 AM
+ * Copyright (c) 2023 . All rights reserved.
+ * Last modified 11/05/23, 11:23 AM
+ */
+
+package dev.pattabiraman.utils;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,7 +17,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
- import android.widget.Toast;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,26 +37,34 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
-import dev.pattabiraman.webserviceutils.callback.OnButtonClick;
-import dev.pattabiraman.webserviceutils.model.HTTPCodeModel;
-import dev.pattabiraman.webserviceutils.model.SelectedImageModel;
-import dev.pattabiraman.webserviceutils.webservice.LruBitmapCache;
+import dev.pattabiraman.utils.callback.OnButtonClick;
+import dev.pattabiraman.utils.callback.OnTaskCompleted;
+import dev.pattabiraman.utils.model.HTTPCodeModel;
+import dev.pattabiraman.utils.model.SelectedImageModel;
+import dev.pattabiraman.utils.webservice.LruBitmapCache;
+import dev.pattabiraman.utils.webservice.VolleyMultipartRequest;
+import dev.pattabiraman.utils.webservice.VolleySingleton;
+import dev.pattabiraman.webserviceutils.R;
 
-public class PluginAppUtils {
+public class AppHelperMethods {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static PluginAppUtils mInstance;
+    private static AppHelperMethods mInstance;
+    private boolean isToTraceLog;
     public static final int MY_SOCKET_TIMEOUT_MS = 864000;
-    public static final String TAG = PluginAppUtils.class.getSimpleName();
+    public static final String TAG = AppHelperMethods.class.getSimpleName();
 
     private static AppCompatActivity activity;
 
-    public static PluginAppUtils getInstance(AppCompatActivity appCompaitActivity) {
+    public static AppHelperMethods getInstance(AppCompatActivity appCompaitActivity) {
         activity = appCompaitActivity;
-        return mInstance == null ? mInstance = new PluginAppUtils() : mInstance;
+        return mInstance == null ? mInstance = new AppHelperMethods() : mInstance;
     }
 
     public void showToast(final AppCompatActivity activity, final String message) {
@@ -77,7 +91,7 @@ public class PluginAppUtils {
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setRetryPolicy(new DefaultRetryPolicy(
-                PluginAppUtils.MY_SOCKET_TIMEOUT_MS,
+                AppHelperMethods.MY_SOCKET_TIMEOUT_MS,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
@@ -113,7 +127,7 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_SUCCESS_OK_:
                     break;
                 case HTTPCodeModel.HTTP_NOT_FOUND:
-                    PluginAppUtils.getInstance(activity).showToast(act,
+                    AppHelperMethods.getInstance(activity).showToast(act,
                             responseObject.optString("message"));
                     break;
                 case HTTPCodeModel.HTTP_VALIDATION_ERROR:
@@ -151,7 +165,7 @@ public class PluginAppUtils {
                                 errors = new StringBuilder("Error Parsing Failed!");
                             }
                         }
-                        PluginAppUtils.getInstance(activity)
+                        AppHelperMethods.getInstance(activity)
                                 .showAlert(act, responseObject.optString("message"), String.valueOf(errors), false,
                                         new OnButtonClick() {
                                             @Override
@@ -171,40 +185,40 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_TOO_MANY_ATTEMPTS:
                     errors = new StringBuilder(responseObject.optString("message"));
                     if (!TextUtils.isEmpty(errors) && errors.toString().trim().length() > 0) {
-                        PluginAppUtils.getInstance(activity)
+                        AppHelperMethods.getInstance(activity)
                                 .showToast(act, errors.toString());
                     }
                     break;
                 case HTTPCodeModel.HTTP_BAD_REQUEST:
                 case HTTPCodeModel.HTTP_UN_AUTHORIZED:
                     errors = new StringBuilder(responseObject.optString("message"));
-                    PluginAppUtils.getInstance(activity).showToast(act, errors.toString());
+                    AppHelperMethods.getInstance(activity).showToast(act, errors.toString());
                     break;
                 case HTTPCodeModel.HTTP_UNAUTHENTICATED:
-                    new PluginAppUtils().cancelPendingRequests(PluginAppUtils.TAG);
-                    PluginAppUtils.getInstance(activity)
+                    new AppHelperMethods().cancelPendingRequests(AppHelperMethods.TAG);
+                    AppHelperMethods.getInstance(activity)
                             .showToast(act, "Session Expired, Login again");
                     break;
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
-                   /* PluginAppUtils.getInstance(activity).showToast(act,
+                   /* AppHelperMethods.getInstance(activity).showToast(act,
                             responseObject.optString("message"));*/
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     break;
                 case HTTPCodeModel.HTTP_CONNECTION_TIME_OUT:
                 case HTTPCodeModel.HTTP_TIME_OUT:
                 case HTTPCodeModel.HTTP_UNKNOWN_ERROR:
-                    PluginAppUtils.getInstance(activity).showToast(act,
+                    AppHelperMethods.getInstance(activity).showToast(act,
                             "Poor internet connection");
                     break;
                 default:
                     errors = new StringBuilder(responseObject.optString("message") + "");
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
-                    PluginAppUtils.getInstance(activity).showToast(act, errors.toString());
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).showToast(act, errors.toString());
                     break;
             }
         } else {
             if (volleyError.getMessage() != null) {
-                PluginAppUtils.getInstance(activity)
+                AppHelperMethods.getInstance(activity)
                         .showToast(act, volleyError.getMessage());
             }
         }
@@ -235,6 +249,57 @@ public class PluginAppUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void uploadImage(final AppCompatActivity activity, final String uploadImageURL, final Map<String, String> params, final boolean isToShowProgressDialog, final OnTaskCompleted onTaskCompleted, final HashMap<String, String> requestHeaders) {
+        if (isToShowProgressDialog)
+            showProgressDialog(activity, true);
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST,
+                uploadImageURL, response -> {
+            if (isToShowProgressDialog)
+                showProgressDialog(activity, false);
+
+            String resultResponse = new String(response.data);
+            try {
+                onTaskCompleted.onTaskSuccess(new JSONObject(resultResponse));
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }, error -> {
+            showProgressDialog(activity, false);
+            handleVolleyError(activity, error);
+            onTaskCompleted.onTaskFailure(error);
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                return requestHeaders;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                if (!TextUtils.isEmpty(PluginAppConstant.getInstance().getSelectedImageModel().getPathOfSelectedImage())) {
+                    // file name could found file base or direct access from real path
+                    params.put("banner", new DataPart("image" + new Random().nextInt() + ".jpg", AppHelperMethods
+                            .getFileDataFromDrawable(activity, PluginAppConstant.getInstance().getSelectedImageModel()),
+                            "image/jpeg"));
+                }
+                return params;
+            }
+        };
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                PluginAppConstant.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(activity).addToRequestQueue(multipartRequest);
+
     }
 
     /**
@@ -291,8 +356,28 @@ public class PluginAppUtils {
         ab.show();
     }
 
+    /**
+     * @return boolean - is trace log enabled
+     */
+    public boolean isToTraceLog() {
+        return isToTraceLog;
+    }
+
+    /**
+     * @param toTraceLog boolean to denote whether log has to be traced or not
+     * @apiNote Must call this method passing true to log the traces. By default the logs are not traced
+     */
+    public void setToTraceLog(boolean toTraceLog) {
+        isToTraceLog = toTraceLog;
+    }
+
+    /**
+     * @param key   String value of key which can be variable name / string value
+     * @param value String value of key which can be variable value / string value
+     */
     public void traceLog(final String key, final String value) {
-        Log.e("TAG-->" + key, "VALUE-->" + value);
+        if (isToTraceLog())
+            Log.e("TAG-->" + key, "VALUE-->" + value);
     }
 
 }

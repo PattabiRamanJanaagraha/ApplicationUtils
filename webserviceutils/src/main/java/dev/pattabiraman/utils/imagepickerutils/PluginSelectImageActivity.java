@@ -222,7 +222,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                 } else if (resultCode == RESULT_CANCELED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, "You have cancelled image selection");
                 } else {
-//                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image");
+//                    AppHelperMethods.getInstance(activity).showToast(activity, "Please select an image");
                     if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
                         activity.finish();
                     }
@@ -234,7 +234,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     setDetailsOfImage(uri);
 //                    doCrop(uri);
                 } else {
-//                    PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
+//                    AppHelperMethods.getInstance(activity).showToast(activity, "Please select an image again");
                     if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
                         activity.finish();
                     }
@@ -245,7 +245,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     Bundle extras = data.getExtras();
                     Bitmap bitmap = extras.getParcelable("data");
                     final Uri croppedImageUri = getImageUri(activity, bitmap);
-//                    PluginAppUtils.getInstance(activity).showToast(activity, croppedImageUri.getPath());
+//                    AppHelperMethods.getInstance(activity).showToast(activity, croppedImageUri.getPath());
 
                 } else {
                     PluginAppUtils.getInstance(activity).showToast(activity, "Please select an image again");
