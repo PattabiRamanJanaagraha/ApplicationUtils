@@ -19,6 +19,7 @@ import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity;
+import dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.PluginWebserviceHelper;
 
@@ -74,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
             bottomSheetDialog.show();
         });
 
-
+        binding.btnLocationPicker.setOnClickListener(v -> {
+            activity.startActivity(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("MAP_API_KEY", "PLACE_YOUR_MAP_KEY_FOR_DROPDOWN_HERE"));
+        });
     }
 
     @Override

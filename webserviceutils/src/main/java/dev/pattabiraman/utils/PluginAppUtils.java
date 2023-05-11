@@ -8,6 +8,7 @@ package dev.pattabiraman.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -18,7 +19,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -45,6 +48,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import dev.pattabiraman.utils.callback.OnButtonClick;
+import dev.pattabiraman.utils.locationutils.GPSTracker;
 import dev.pattabiraman.utils.model.HTTPCodeModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.LruBitmapCache;
@@ -324,4 +328,29 @@ public class PluginAppUtils {
     }
 
 
+    public boolean setLatitudeLongitude(AppCompatActivity activity) {
+        GPSTracker gps = new GPSTracker(activity);
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+            PluginAppConstant.latitude = gps.getLatitude();
+            PluginAppConstant.longitude = gps.getLongitude();
+            return true;
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+            return false;
+        }
+    }
+
+    /**
+     * @param activity AppCompatActivity object of calling class
+     * @param view     Respective target view of active window to hide keyboard
+     */
+    public void hideKeyboard(AppCompatActivity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

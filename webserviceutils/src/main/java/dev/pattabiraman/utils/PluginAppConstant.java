@@ -9,6 +9,12 @@ package dev.pattabiraman.utils;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 
 public class PluginAppConstant {
+    public static final int LOCATION_MOVEMENT_FOOTPATH = 5; //5 metres
+    public static boolean isToLoadSelectedLocation;
+    public static String location;
+    public static String MAP_API_KEY = "";
+    public static double latitude, longitude;
+    public static boolean isAnyLocationSuggestionClicked;
     private static PluginAppConstant mInstance;
 
     public static PluginAppConstant getInstance() {

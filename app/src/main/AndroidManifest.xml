@@ -33,6 +33,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="dev.pattabiraman.utils.locationutils.LocationSearchAutoCompleteActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

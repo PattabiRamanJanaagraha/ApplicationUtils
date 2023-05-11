@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/parentLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:minHeight="?android:attr/actionBarSize" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/cvBottomLayout"
+            android:layout_below="@+id/toolbar"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="FragmentTagUsage" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/horizontal_vertical_spacing"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/infoWindow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/tooltip"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/horizontal_vertical_spacing"
+                        android:text="Move map to adjust"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_secondary" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="64dp"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/ic_plugin_map_pin"
+                        android:tint="@color/colorPrimary"
+                        app:tint="@color/colorPrimary" />
+                </LinearLayout>
+            </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout
+            android:id="@+id/cvBottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/confirmLocation"
+            android:background="@color/white">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/change"
+                android:layout_alignBottom="@+id/change"
+                android:layout_marginStart="@dimen/margin16dp"
+                android:layout_toStartOf="@+id/change"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center_vertical"
+                android:text="Location address"
+                android:textColor="@color/tertiaryBlack"
+                android:textSize="@dimen/textSize16dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/horizontal_vertical_spacing"
+                android:layout_marginEnd="@dimen/margin16dp"
+                android:background="@drawable/round_corner_stroke"
+                android:drawablePadding="@dimen/horizontal_vertical_spacing"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:paddingStart="@dimen/margin16dp"
+                android:paddingTop="@dimen/horizontal_vertical_spacing"
+                android:paddingEnd="@dimen/margin16dp"
+                android:paddingBottom="@dimen/horizontal_vertical_spacing"
+                android:text="Search"
+                android:textAllCaps="true"
+                android:textColor="@color/secondaryBlack"
+                android:textSize="@dimen/textSize14dp"
+                android:textStyle="bold"
+                app:drawableLeftCompat="@mipmap/ic_plugin_search_white_24dp"
+                app:drawableTint="@color/secondaryBlack"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/selectedLocationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/change"
+                android:layout_marginStart="@dimen/margin16dp"
+                android:layout_marginTop="@dimen/horizontal_vertical_spacing"
+                android:layout_marginEnd="@dimen/margin16dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:lineSpacingMultiplier="1.2"
+                android:text="Loading..."
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize16dp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/confirmLocation"
+            style="@style/ButtonTheme"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginEnd="@dimen/margin_32dp"
+            android:enabled="true"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Confirm Location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_default"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

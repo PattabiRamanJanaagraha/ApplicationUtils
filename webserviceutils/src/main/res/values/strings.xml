@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Pattabi Raman on 11/05/23, 7:06 PM
+  ~ Copyright (c) 2023 . All rights reserved.
+  ~ Last modified 11/05/23, 7:06 PM
+  -->
+
+<resources>
+    <string name="mapview_api_key" translatable="false">PLACE_MAP_VIEW_API_KEY_HERE</string>
+</resources>
