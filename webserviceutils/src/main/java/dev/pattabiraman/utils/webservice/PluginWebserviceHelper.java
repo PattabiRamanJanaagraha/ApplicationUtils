@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.callback.OnResponseListener;
@@ -52,21 +53,6 @@ public class PluginWebserviceHelper {
     public static final int METHOD_DELETE = 4;
     public static final int METHOD_PATCH = 5;
 
-    public static final int HEADER_TYPE_NORMAL = 0;
-    public static final int HEADER_TYPE_EVENTS = 1;
-    public static final int HEADER_TYPE_NONE = 2;
-    public static final int HEADER_TYPE_ANNOUNCEMENT = 3;
-    public static final int HEADER_TYPE_ROLE = 4;
-    public static final int HEADER_TYPE_NOTIFICATION = 5;
-    public static final int HEADER_TYPE_PUBLIC_TOILETS = 6;
-    public static final int HEADER_TYPE_AUTH = 7;
-    public static final int HEADER_TYPE_PROFILE = 8;
-    public static final int HEADER_TYPE_CONVERT_COMPLAINT_TO_EVENT = 9;
-    public static final int HEADER_TYPE_WQS_SAVE_ROAD_SIDE = 10;
-    public static final int HEADER_TYPE_GENERATE_QR_CODE = 11;
-    public static final int HEADER_TYPE_GET_STATS_DASHBOARD = 12;
-
-
     public static final String TAG = PluginWebserviceHelper.class.getSimpleName();
 
     /**
@@ -76,12 +62,13 @@ public class PluginWebserviceHelper {
      * @param params                 HashMap<String,String> if other than GET/PATCH method
      * @param onResponseListener     OnResponseListener callback for success/failure response
      * @param isToShowProgressDialog isToShowProgressDialog boolean-value if needed to show loader
+     * @apiNote set this method to true to trace log. if this method is not called, by default no traces are logged in logcat view
      */
 
     public void runWebService(final AppCompatActivity activity, final int methodType, final String url, HashMap<String, String> params, OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
-        PluginAppUtils.getInstance(activity).traceLog("requestURL", url);
+        AppHelperMethods.getInstance(activity).traceLog("requestURL", url);
         if (params != null)
-            PluginAppUtils.getInstance(activity).traceLog("requestParams", params.toString());
+            AppHelperMethods.getInstance(activity).traceLog("requestParams", params.toString());
         switch (methodType) {
             case METHOD_GET:
                 doGet(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
@@ -114,8 +101,8 @@ public class PluginWebserviceHelper {
             if (isToShowProgressDialog) {
                 PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
             }
-            PluginAppUtils.getInstance(activity).traceLog("URL : ", url);
-            PluginAppUtils.getInstance(activity).traceLog("Response : ", response + "");
+            AppHelperMethods.getInstance(activity).traceLog("URL : ", url);
+            AppHelperMethods.getInstance(activity).traceLog("Response : ", response + "");
             if (response.has("httpCode")) {
                 if (response.optInt("httpCode") == 200 || response.optInt("httpCode") == 201) {
                     try {
@@ -304,8 +291,8 @@ public class PluginWebserviceHelper {
             if (isToShowProgressDialog) {
                 PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
             }
-            PluginAppUtils.getInstance(activity).traceLog("URL : ", url);
-            PluginAppUtils.getInstance(activity).traceLog("Response : ", response + "");
+            AppHelperMethods.getInstance(activity).traceLog("URL : ", url);
+            AppHelperMethods.getInstance(activity).traceLog("Response : ", response + "");
             if (response.has("httpCode")) {
                 if (response.optInt("httpCode") == 200 || response.optInt("httpCode") == 201) {
                     try {
@@ -365,9 +352,9 @@ public class PluginWebserviceHelper {
                     Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
                     if (cacheEntry == null) {
                         cacheEntry = new Cache.Entry();
-                        PluginAppUtils.getInstance(activity).traceLog("Cache", "Fresh Data");
+                        AppHelperMethods.getInstance(activity).traceLog("Cache", "Fresh Data");
                     } else {
-                        PluginAppUtils.getInstance(activity).traceLog("Cache", "Cache Load" + "\n" + url);
+                        AppHelperMethods.getInstance(activity).traceLog("Cache", "Cache Load" + "\n" + url);
                     }
                     final long cacheHitButRefreshed = 60 * 1000; // in 1 minute cache will be hit, but also refreshed on background
                     final long cacheExpired = 2 * 60 * 60 * 1000; // in 2 hours this cache entry expires completely
@@ -388,7 +375,7 @@ public class PluginWebserviceHelper {
                     }
                     cacheEntry.responseHeaders = response.headers;
                     final String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                    PluginAppUtils.getInstance(activity).traceLog("CACHE_RESPONSE", "----------->" + jsonString);
+                    AppHelperMethods.getInstance(activity).traceLog("CACHE_RESPONSE", "----------->" + jsonString);
                     return Response.success(new JSONObject(jsonString), cacheEntry);
                 } catch (UnsupportedEncodingException | JSONException e) {
                     return Response.error(new ParseError(e));
@@ -436,8 +423,8 @@ public class PluginWebserviceHelper {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, response -> {
-            PluginAppUtils.getInstance(activity).traceLog("URL : ", url);
-            PluginAppUtils.getInstance(activity).traceLog("Response : ", response + "");
+            AppHelperMethods.getInstance(activity).traceLog("URL : ", url);
+            AppHelperMethods.getInstance(activity).traceLog("Response : ", response + "");
             try {
                 if (isToShowProgressDialog) {
                     PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);

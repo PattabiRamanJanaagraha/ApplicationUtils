@@ -31,7 +31,10 @@ Thrid party framewoks and Library are managed Github.
 * Each Module Will have its own folder
     - webserviceutils
        - callback
+       - imagepickerutils
+       - locationutils
        - model
+       - permissionutils
        - webservice
 
 

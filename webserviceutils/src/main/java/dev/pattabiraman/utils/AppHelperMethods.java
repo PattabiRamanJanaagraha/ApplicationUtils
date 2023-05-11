@@ -360,7 +360,7 @@ public class AppHelperMethods {
      * @return boolean - is trace log enabled
      */
     public boolean isToTraceLog() {
-        return isToTraceLog;
+        return this.isToTraceLog;
     }
 
     /**
@@ -368,7 +368,7 @@ public class AppHelperMethods {
      * @apiNote Must call this method passing true to log the traces. By default the logs are not traced
      */
     public void setToTraceLog(boolean toTraceLog) {
-        isToTraceLog = toTraceLog;
+        this.isToTraceLog = toTraceLog;
     }
 
     /**
@@ -377,7 +377,7 @@ public class AppHelperMethods {
      */
     public void traceLog(final String key, final String value) {
         if (isToTraceLog())
-            Log.e("TAG-->" + key, "VALUE-->" + value);
+            Log.e(TAG, "KEY-->" + key + "\nVALUE-->" + value);
     }
 
 }

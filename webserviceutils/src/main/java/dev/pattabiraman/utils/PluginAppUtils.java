@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.widget.Toast;
@@ -202,7 +201,7 @@ public class PluginAppUtils {
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
                    /* AppHelperMethods.getInstance(activity).showToast(act,
                             responseObject.optString("message"));*/
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     break;
                 case HTTPCodeModel.HTTP_CONNECTION_TIME_OUT:
                 case HTTPCodeModel.HTTP_TIME_OUT:
@@ -212,7 +211,7 @@ public class PluginAppUtils {
                     break;
                 default:
                     errors = new StringBuilder(responseObject.optString("message") + "");
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     PluginAppUtils.getInstance(activity).showToast(act, errors.toString());
                     break;
             }
@@ -324,8 +323,5 @@ public class PluginAppUtils {
         return bitmap;
     }
 
-    public void traceLog(final String key, final String value) {
-        Log.e("TAG-->" + key, "VALUE-->" + value);
-    }
 
 }

@@ -14,12 +14,12 @@ import java.util.HashMap;
 
 import dev.pattabiraman.apputils.databinding.ActivityMainBinding;
 import dev.pattabiraman.apputils.databinding.InflateBottomsheetImagePickerDialogBinding;
+import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.PluginWebserviceHelper;
-import dev.pattabiraman.utils.AppHelperMethods;
 
 public class MainActivity extends AppCompatActivity {
     private AppCompatActivity activity;
