@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnLocationPicker.setOnClickListener(v -> {
-            activity.startActivity(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("MAP_API_KEY", "PLACE_YOUR_MAP_KEY_FOR_DROPDOWN_HERE"));
+            activity.startActivity(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("MAP_API_KEY", "AIzaSyAEByVWAKZ4-SgtoDejJ8KTHqKNxDyVdPM"));
         });
     }
 

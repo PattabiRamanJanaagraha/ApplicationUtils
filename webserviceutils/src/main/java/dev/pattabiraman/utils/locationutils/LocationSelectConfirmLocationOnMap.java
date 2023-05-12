@@ -46,7 +46,13 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityConfirmLocationOnMap
  * @author Pattabi
  * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
  * <br/>
- * send putExtras("MAP_API_KEY",STRING) - value to be a working autosuggestion map key
+ * MUST send putExtras("MAP_API_KEY",STRING) - value to be a working autosuggestion map key
+ * <br/>
+ * MUST use below line in your app/res/values/strings.xml
+ * <string name="mapview_api_key" translatable="false">PLACE_MAP_VIEW_API_KEY_HERE</string>
+ * <br/>
+ * MUST use below line in your app/AndroidManifest.xml
+ *
  */
 public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActivity implements
         OnMapReadyCallback {
