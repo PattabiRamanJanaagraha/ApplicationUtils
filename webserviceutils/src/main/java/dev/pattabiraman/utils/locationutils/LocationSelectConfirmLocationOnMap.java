@@ -39,6 +39,7 @@ import dev.pattabiraman.utils.callback.HandleBackgroundThread;
 import dev.pattabiraman.utils.callback.HandlerUtils;
 import dev.pattabiraman.utils.permissionutils.GetPermissionResult;
 import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
+import dev.pattabiraman.webserviceutils.BuildConfig;
 import dev.pattabiraman.webserviceutils.R;
 import dev.pattabiraman.webserviceutils.databinding.ActivityConfirmLocationOnMapBinding;
 
@@ -46,7 +47,6 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityConfirmLocationOnMap
  * @author Pattabi
  * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
  * <br/>
- * MUST send putExtras("MAP_API_KEY",STRING) - value to be a working autosuggestion map key
  * MUST send putExtras("requestCode",102) - value to throwback selected location result
  * <br/>
  * MUST use below line in your app/res/values/strings.xml
@@ -84,7 +84,10 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
 
         PluginAppConstant.isToLoadSelectedLocation = true;
         activity = LocationSelectConfirmLocationOnMap.this;
-        PluginAppConstant.MAP_API_KEY = getIntent().getExtras().getString("MAP_API_KEY");
+
+        PluginAppConstant.MAP_API_KEY = BuildConfig.googleMapAutoSuggestionApiKey;
+        // getIntent().getExtras().getString("MAP_API_KEY");
+
         requestCode = getIntent().getExtras().getInt("requestCode");
         builder = new Builder();
         initiateGoogleMaps();

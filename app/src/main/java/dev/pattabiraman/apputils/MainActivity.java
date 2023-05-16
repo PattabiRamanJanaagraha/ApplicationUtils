@@ -68,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.btnLocationPicker.setOnClickListener(v -> {
             activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class)
-                    .putExtra("requestCode", 102)
-                    .putExtra("MAP_API_KEY", activity.getResources().getString(R.string.dropdown_map_location_suggestion_key)), 102);
+                    .putExtra("requestCode", 102), 102);
         });
     }
 

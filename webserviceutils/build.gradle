@@ -3,6 +3,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
+def getMapSuggestionAPIKey() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("MAP_SUGGESTION_API_KEY");
+}
+
 android {
     namespace 'dev.pattabiraman.webserviceutils'
     compileSdk 33
@@ -13,6 +19,11 @@ android {
         versionName '1.0.3'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        manifestPlaceholders = [googleMapViewApiKey          : "${properties.getProperty('MAPVIEW_API_KEY')}",
+                                googleMapAutoSuggestionApiKey: "${properties.getProperty('MAP_SUGGESTION_API_KEY')}"]
+        buildConfigField "String", "googleMapAutoSuggestionApiKey", "\"" + getMapSuggestionAPIKey() + "\""
     }
 
     buildFeatures {
