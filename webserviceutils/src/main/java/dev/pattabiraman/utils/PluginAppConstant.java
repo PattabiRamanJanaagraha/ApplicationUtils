@@ -11,6 +11,8 @@ import dev.pattabiraman.utils.model.SelectedImageModel;
 public class PluginAppConstant {
     public static final int LOCATION_MOVEMENT_FOOTPATH = 5; //5 metres
     public static boolean isToLoadSelectedLocation;
+    public static final String REQUEST_ALLOW_PERMISSION_STRING = "We suggest to allow permissions to make app work as expected";
+
     public static String location;
     public static String MAP_API_KEY = "";
     public static double latitude, longitude;

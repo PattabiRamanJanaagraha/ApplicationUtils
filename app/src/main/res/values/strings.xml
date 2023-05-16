@@ -1,3 +1,9 @@
-<resources>
-    <string name="app_name">AppUtils</string>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Pattabi Raman on 16/05/23, 12:51 PM
+  ~ Copyright (c) 2023 . All rights reserved.
+  ~ Last modified 16/05/23, 12:51 PM
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">AppUtils Sample</string>
 </resources>

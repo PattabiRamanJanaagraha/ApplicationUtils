@@ -147,7 +147,7 @@ public class GPSTracker extends Service implements LocationListener {
 
                 @Override
                 public void resultPermissionRevoked() {
-                    PluginAppUtils.getInstance(activity).showToast(activity, "We suggest to allow permissions to make app work as expected");
+                    PluginAppUtils.getInstance(activity).showToast(activity, PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
 
                 }
             });

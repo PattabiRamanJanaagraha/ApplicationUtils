@@ -42,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
         /**@apiNote first approach - show bottomsheet dialog from library referenced layout*/
         binding.pickImage.setOnClickListener(v -> {
-            startActivityForResult(new Intent(activity, PluginSelectImageActivity.class)
-                    .putExtra("requestCode", 101)
-                    .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_NONE)
-                    .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra("isToShowDrawableStart", true), 101);
+            startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101).putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_NONE).putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra("isToShowDrawableStart", true), 101);
         });
         /*second approach - use own ui/layout then send flags to pick (automatic CTA) image*/
         binding.btnBottomSheet.setOnClickListener(v -> {
@@ -55,18 +52,12 @@ public class MainActivity extends AppCompatActivity {
             bottomSheetDialog.setCancelable(false);
             imagePickerDialogBinding.tvCamera.setOnClickListener(tvCameraView -> {
                 bottomSheetDialog.dismiss();
-                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101)
-                        .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_CAMERA)
-                        .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra
-                                ("isToShowDrawableStart", true), 101);
+                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101).putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_CAMERA).putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra("isToShowDrawableStart", true), 101);
 
             });
             imagePickerDialogBinding.tvGallery.setOnClickListener(tvCameraView -> {
                 bottomSheetDialog.dismiss();
-                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101)
-                        .putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_GALLERY)
-                        .putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra
-                                ("isToShowDrawableStart", true), 101);
+                startActivityForResult(new Intent(activity, PluginSelectImageActivity.class).putExtra("requestCode", 101).putExtra("clickTypeAutomate", PluginAppConstant.CLICK_TYPE_GALLERY).putExtra("cameraBtnText", "Pick from Camera").putExtra("galleryBtnText", "Pick from Gallery").putExtra("cancelBtnText", "Cancel Selection").putExtra("isToShowDrawableStart", true), 101);
             });
             imagePickerDialogBinding.tvCancel.setOnClickListener(tvCameraView -> {
                 bottomSheetDialog.dismiss();
@@ -76,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btnLocationPicker.setOnClickListener(v -> {
-            activity.startActivity(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("MAP_API_KEY", "PLACE_MAP_VIEW_API_KEY_HERE"));
+            activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class)
+                    .putExtra("requestCode", 102)
+                    .putExtra("MAP_API_KEY", activity.getResources().getString(R.string.dropdown_map_location_suggestion_key)), 102);
         });
     }
 
@@ -84,8 +77,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            final SelectedImageModel model = PluginAppConstant.getInstance().getSelectedImageModel();
-            binding.ivSelectedImage.setImageURI(model.getUriOfImage());
+            switch (requestCode) {
+                case 101:
+                    final SelectedImageModel model = PluginAppConstant.getInstance().getSelectedImageModel();
+                    binding.ivSelectedImage.setImageURI(model.getUriOfImage());
+                    break;
+                case 102:
+                    final String location;
+                    if (data != null) {
+                        location = data.getExtras().getString("location");
+                        final Double lat = data.getExtras().getDouble("lat");
+                        final Double lon = data.getExtras().getDouble("lon");
+                        binding.tvSelectedLocationDetails.setText("Location: " + location + "\n" + "lat: " + lat + "\nlon: " + lon);
+                    }
+
+                    break;
+            }
+
         }
     }
 

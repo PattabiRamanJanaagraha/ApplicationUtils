@@ -46,19 +46,17 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityConfirmLocationOnMap
  * @author Pattabi
  * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
  * <br/>
- * MUST send putExtras("MAP_API_KEY",STRING) - value to be a working autosuggestion map key 
+ * MUST send putExtras("MAP_API_KEY",STRING) - value to be a working autosuggestion map key
+ * MUST send putExtras("requestCode",102) - value to throwback selected location result
  * <br/>
  * MUST use below line in your app/res/values/strings.xml
  * <string name="mapview_api_key" translatable="false">PLACE_MAP_VIEW_API_KEY_HERE</string>
  * <br/>
  * MUST use below line in your app/AndroidManifest.xml
- *
  */
-public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActivity implements
-        OnMapReadyCallback {
+public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActivity implements OnMapReadyCallback {
 
 
-    private static final String REQUEST_ALLOW_PERMISSION = "We suggest to allow permissions to make app work as expected";
     public static AppCompatActivity activity;
     private static GoogleMap mMap;
     MyLocation myLocation;
@@ -75,6 +73,7 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
 
     private final String UPDATING_ADDRESS_STRING = "Updating address...";
     private final String LOADING = "Loading...";
+    private int requestCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,16 +82,15 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         binding = ActivityConfirmLocationOnMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        PluginAppConstant.isToLoadSelectedLocation = false;
+        PluginAppConstant.isToLoadSelectedLocation = true;
         activity = LocationSelectConfirmLocationOnMap.this;
         PluginAppConstant.MAP_API_KEY = getIntent().getExtras().getString("MAP_API_KEY");
-
+        requestCode = getIntent().getExtras().getInt("requestCode");
         builder = new Builder();
         initiateGoogleMaps();
 
         setToolbarAndCustomizeTitle();
-        binding.change.setOnClickListener(v -> activity.startActivity(new Intent(activity,
-                LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", false).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY)));
+        binding.change.setOnClickListener(v -> activity.startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY)));
 
         PluginAppConstant.location = UPDATING_ADDRESS_STRING;
         binding.confirmLocation.setVisibility(View.INVISIBLE);
@@ -100,14 +98,18 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         binding.confirmLocation.setOnClickListener(v -> {
             if (PluginAppConstant.latitude != 0.0) {
                 PluginAppConstant.isAnyLocationSuggestionClicked = true;
-
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("location", PluginAppConstant.location);
+                resultIntent.putExtra("lat", PluginAppConstant.latitude);
+                resultIntent.putExtra("lon", PluginAppConstant.longitude);
+                setResult(RESULT_OK, resultIntent);
                 activity.finish();
             } else {
                 //pick a location
             }
         });
         binding.infoWindow.setVisibility(View.INVISIBLE);
-        binding.selectedLocationText.setText(REQUEST_ALLOW_PERMISSION);
+        binding.selectedLocationText.setText(PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
     }
 
     @Override
@@ -131,18 +133,16 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         });
         final Drawable upArrow = ContextCompat.getDrawable(activity, R.drawable.ic_baseline_arrow_back_ios_24);
         if (upArrow != null) {
-            upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            upArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
         }
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        String CONFIRM_LOCATION = "Confirm Location";
-        getSupportActionBar().setTitle(CONFIRM_LOCATION);
+        getSupportActionBar().setTitle("");
         binding.toolbar.setTitleTextColor(Color.WHITE);
 
     }
 
     private void initiateGoogleMaps() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -166,21 +166,18 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
 
             @Override
             public void resultPermissionRevoked() {
-                PluginAppUtils.getInstance(activity).showToast(activity, REQUEST_ALLOW_PERMISSION);
-                binding.selectedLocationText
-                        .setText(REQUEST_ALLOW_PERMISSION);
+                PluginAppUtils.getInstance(activity).showToast(activity, PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
+                binding.selectedLocationText.setText(PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
                 PluginAppConstant.latitude = 0.0;
                 PluginAppConstant.longitude = 0.0;
-                startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class)
-                        .putExtra("isToShowDetectMyLocation", false));
+                startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true));
                 mMap.setOnCameraIdleListener(() -> {
                     if (PluginAppConstant.latitude != 0.0) {
                         builder = new Builder();
                         builder.include(new LatLng(PluginAppConstant.latitude, PluginAppConstant.longitude));
                         animateToLocation(builder);
                     } else {
-                        startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class)
-                                .putExtra("isToShowDetectMyLocation", false));
+                        startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true));
                     }
                 });
             }
@@ -222,9 +219,9 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
                 PluginAppConstant.latitude = mMap.getCameraPosition().target.latitude;
                 PluginAppConstant.longitude = mMap.getCameraPosition().target.longitude;
                 getAddressFromLatLong();
-//                if (PluginAppConstant.isToLoadSelectedLocation) {
-//                    PluginAppConstant.isToLoadSelectedLocation = false;
-//                }
+                if (PluginAppConstant.isToLoadSelectedLocation) {
+                    PluginAppConstant.isToLoadSelectedLocation = false;
+                }
             });
             mMap.setOnCameraMoveListener(() -> {
                 binding.infoWindow.setVisibility(View.INVISIBLE);
@@ -247,7 +244,7 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
                     CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, 8);
                     mMap.animateCamera(cu);
                 }
-                binding.confirmLocation.setVisibility(View.VISIBLE);
+//                binding.confirmLocation.setVisibility(View.VISIBLE);
                 binding.selectedLocationText.setText(PluginAppConstant.location);
             }
         } catch (Exception e) {
@@ -263,9 +260,11 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         checkForLocationPermission();
         mMap.setOnMyLocationClickListener(location -> {
-            PluginAppConstant.latitude = location.getLatitude();
-            PluginAppConstant.longitude = location.getLongitude();
-            getCurrentLocation();
+            if (location.getLatitude() > 0 && location.getLongitude() > 0) {
+                PluginAppConstant.latitude = location.getLatitude();
+                PluginAppConstant.longitude = location.getLongitude();
+                getCurrentLocation();
+            }
         });
     }
 

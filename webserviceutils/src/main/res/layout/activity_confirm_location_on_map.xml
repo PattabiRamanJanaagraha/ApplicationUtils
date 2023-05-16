@@ -12,18 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:minHeight="?android:attr/actionBarSize" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/cvBottomLayout"
-            android:layout_below="@+id/toolbar"
             android:orientation="vertical">
 
             <FrameLayout
@@ -31,12 +24,19 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <fragment
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin56dp"
+                    android:background="@color/transparent"
+                    android:translationZ="90dp" />
+
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:ignore="FragmentTagUsage" />
+                    tools:ignore="SupportMapFragment" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
                 android:textSize="@dimen/textSize16dp" />
         </RelativeLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/confirmLocation"
             style="@style/ButtonTheme"
             android:layout_alignParentBottom="true"
@@ -146,7 +146,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_default"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

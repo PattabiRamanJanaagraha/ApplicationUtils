@@ -50,3 +50,7 @@ google-services.json
 # Android Profiling
 *.hprof
 >>>>>>> bde1a3c456a44dc9fae2152b7bf43e296794e4ff
+
+#Secret Keys for google map view and dropdown autosuggestion
+/app/src/main/res/values/secrets.xml
+/webserviceutils/src/main/res/values/secrets.xml
