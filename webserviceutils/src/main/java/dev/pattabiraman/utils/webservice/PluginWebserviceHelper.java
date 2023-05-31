@@ -6,6 +6,8 @@
 
 package dev.pattabiraman.utils.webservice;
 
+import static dev.pattabiraman.utils.PluginAppConstant.MY_SOCKET_TIMEOUT_MS;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Cache;
@@ -27,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.pattabiraman.utils.AppHelperMethods;
-import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.model.HTTPCodeModel;
@@ -52,6 +53,8 @@ public class PluginWebserviceHelper {
     public static final int METHOD_PUT = 3;
     public static final int METHOD_DELETE = 4;
     public static final int METHOD_PATCH = 5;
+
+    public static final int METHOD_POST_AS_JSON = 6;
 
     public static final String TAG = PluginWebserviceHelper.class.getSimpleName();
 
@@ -172,9 +175,63 @@ public class PluginWebserviceHelper {
             }
 
         };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
+    }
+
+    public void doPostJSONRequest(final AppCompatActivity activity, final String url, final JSONObject requestBodyParams, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
+        if (isToShowProgressDialog) {
+            PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
+        }
+        AppHelperMethods.getInstance(activity).traceLog("requestUrl", url);
+        AppHelperMethods.getInstance(activity).traceLog("requestBody", requestBodyParams + "");
+        AppHelperMethods.getInstance(activity).traceLog("requestHeaders", requestHeaders + "");
+
+        JsonObjectRequest request_json = new JsonObjectRequest(url, requestBodyParams, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    if (isToShowProgressDialog) {
+                        PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
+                    }
+                    onResponseListener.OnResponseSuccess(response);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (isToShowProgressDialog) {
+                    PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
+                }
+                NetworkResponse response = error.networkResponse;
+                try {
+                    if (response != null) {
+                        PluginAppUtils.getInstance(activity).showToast(activity, new JSONObject(new String(response.data)).optString("message"));
+                    }
+                    onResponseListener.OnResponseFailure(new JSONObject());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }) {
+
+            //This is for Headers If You Needed
+            @Override
+            public Map<String, String> getHeaders() {
+                return requestHeaders;
+            }
+        };
+
+        // add the request object to the queue to be executed
+        request_json.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(activity).addToRequestQueue(request_json);
     }
 
     private void doPut(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
@@ -228,7 +285,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
@@ -278,7 +335,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
@@ -411,7 +468,7 @@ public class PluginWebserviceHelper {
 
 
         };
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Adding request to request queue
         jsonObjReq.setShouldCache(false);
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
@@ -492,7 +549,7 @@ public class PluginWebserviceHelper {
                 return requestHeaders;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(PluginAppConstant.MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 

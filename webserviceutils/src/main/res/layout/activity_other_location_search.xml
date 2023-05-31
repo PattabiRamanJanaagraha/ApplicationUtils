@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:background="@drawable/edittext_bg_"
             android:cursorVisible="true"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/raleway_bold"
             android:hint="Search location"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -125,18 +125,18 @@
             android:layout_margin="@dimen/margin16dp"
             android:background="@color/transparent"
             android:drawablePadding="@dimen/horizontal_vertical_spacing"
-            android:drawableTint="@color/secondary"
+            android:drawableTint="@color/secondaryPink"
             android:enabled="true"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/raleway_bold"
             android:gravity="center"
             android:paddingStart="@dimen/margin16dp"
             android:paddingEnd="@dimen/margin16dp"
             android:text="Detect My Location"
             android:textAllCaps="false"
-            android:textColor="@color/secondary"
+            android:textColor="@color/secondaryPink"
             android:textSize="@dimen/text_size_default"
             app:drawableStartCompat="@mipmap/ic_plugin_action_location_found"
-            app:drawableTint="@color/secondary" />
+            app:drawableTint="@color/secondaryPink" />
     </RelativeLayout>
 
     <ListView

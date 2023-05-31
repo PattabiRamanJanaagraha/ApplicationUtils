@@ -13,7 +13,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="colorSecondary">@color/secondary</item>
-        <item name="android:fontFamily" >@font/roboto_light</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
     </style>
 
     <!-- progress dialog style -->AppTheme
@@ -22,7 +22,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fontFamily" >@font/roboto_light</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -31,9 +31,10 @@
 
 
     <style name="ButtonTheme" parent="Widget.AppCompat.Button">
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/montserrat_bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/raleway_bold</item>
         <item name="android:background">@drawable/button_bg</item>
         <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/raleway_bold</item>
         <item name="android:maxLines">1</item>
         <item name="android:elevation">@dimen/horizontal_vertical_spacing</item>
         <item name="android:paddingStart">@dimen/margin16dp</item>
@@ -41,10 +42,10 @@
         <item name="android:textSize">@dimen/textSize16dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/margin40dp</item>
-        <item name="android:enabled">false</item>
-        <item name="android:textColor">@color/greySecondary</item>
-        <item name="android:layout_marginTop">@dimen/margin40dp</item>
-        <item name="android:layout_marginBottom">@dimen/margin40dp</item>
+        <item name="android:enabled">true</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginTop">@dimen/margin16dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin16dp</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
@@ -55,7 +56,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/margin16dp</item>
         <item name="android:layout_marginTop">@dimen/horizontal_vertical_spacing</item>
-        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="fontFamily">@font/raleway_bold</item>
         <item name="android:inputType">text|textAutoComplete|textAutoCorrect</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center_vertical</item>
@@ -63,5 +64,28 @@
         <item name="android:textColor">@color/primerColorBlack</item>
         <item name="android:textSize">@dimen/textSize18dp</item>
     </style>
+
+    <style name="TextViewHeadingsTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin16dp</item>
+        <item name="android:layout_marginTop">@dimen/horizontal_vertical_spacing</item>
+        <item name="fontFamily">@font/raleway_bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/textSize18dp</item>
+    </style>
+
+    <style name="TextViewSubHeadingsTheme" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin16dp</item>
+        <item name="android:layout_marginTop">@dimen/horizontal_vertical_spacing</item>
+        <item name="fontFamily">@font/raleway_regular</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/textSize16dp</item>
+    </style>
+
 
 </resources>

@@ -19,6 +19,7 @@ public class PluginAppConstant {
     public static boolean isAnyLocationSuggestionClicked;
     private static PluginAppConstant mInstance;
 
+
     public static PluginAppConstant getInstance() {
         return mInstance == null ? mInstance = new PluginAppConstant() : mInstance;
     }

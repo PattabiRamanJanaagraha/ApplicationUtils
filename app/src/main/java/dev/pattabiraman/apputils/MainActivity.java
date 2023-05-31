@@ -15,11 +15,14 @@ import java.util.HashMap;
 
 import dev.pattabiraman.apputils.databinding.ActivityMainBinding;
 import dev.pattabiraman.apputils.databinding.InflateBottomsheetImagePickerDialogBinding;
+import dev.pattabiraman.apputils.otpless.OTPlessVerification;
 import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
+import dev.pattabiraman.utils.calendarutils.CalendarSinglaDateSelectActivity;
 import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.imagepickerutils.PluginSelectImageActivity;
 import dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap;
+import dev.pattabiraman.utils.model.DateRangeFilterModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.PluginWebserviceHelper;
 
@@ -33,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity = MainActivity.this;
-
+        AppHelperMethods.getInstance(activity).setToTraceLog(true);
+        
         binding.runWebService.setOnClickListener(V -> {
             /**
              * @apiNote set this method to true to trace log. if this method is not called, by default no traces are logged in logcat view*/
-            AppHelperMethods.getInstance(activity).setToTraceLog(true);
             runWebservice();
         });
         /**@apiNote first approach - show bottomsheet dialog from library referenced layout*/
@@ -66,10 +69,18 @@ public class MainActivity extends AppCompatActivity {
             bottomSheetDialog.show();
         });
 
+        /*pick a location*/
         binding.btnLocationPicker.setOnClickListener(v -> {
-            activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class)
-                    .putExtra("requestCode", 102), 102);
+            activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("requestCode", 102), 102);
         });
+
+        /*pick a date*/
+        binding.btnPickADate.setOnClickListener(v -> {
+            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103), 103);
+        });
+
+        /*otpless login */
+        OTPlessVerification.OTPlessVerification(activity).setOTPPressCTA(binding.whatsappLogin);
     }
 
     @Override
@@ -89,7 +100,12 @@ public class MainActivity extends AppCompatActivity {
                         final Double lon = data.getExtras().getDouble("lon");
                         binding.tvSelectedLocationDetails.setText("Location: " + location + "\n" + "lat: " + lat + "\nlon: " + lon);
                     }
-
+                    break;
+                case 103:
+                    if (data != null) {
+                        DateRangeFilterModel mSelectDateModel = (DateRangeFilterModel) data.getSerializableExtra("result");
+                        binding.btnPickADate.setText(mSelectDateModel.getmStarteDate());
+                    }
                     break;
             }
 

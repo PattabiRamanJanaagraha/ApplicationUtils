@@ -20,9 +20,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/runWebService"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ButtonTheme"
+                android:enabled="true"
                 android:text="Run Webservice"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +36,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/pickImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ButtonTheme"
+                android:enabled="true"
                 android:text="Pick an image"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,9 +54,11 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBottomSheet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ButtonTheme"
+                android:enabled="true"
+
                 android:text="Bottom Sheet Image Picker"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,10 +66,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnLocationPicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin16dp"
+                style="@style/ButtonTheme"
+                android:enabled="true"
                 android:text="Pick Location From Map"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +80,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin16dp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnPickADate"
+                style="@style/ButtonTheme"
+                android:enabled="true"
+                android:text="Pick A Date"
+                android:textColor="@color/white" />
+            
+
+            <com.otpless.views.WhatsappLoginButton
+                android:id="@+id/whatsapp_login"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_margin="20dp"
+                app:otpless_link="https://janaagraha.authlink.me"
+                tools:ignore="MissingDefaultResource" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 

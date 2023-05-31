@@ -9,6 +9,18 @@ def getMapSuggestionAPIKey() {
     return properties.getProperty("MAP_SUGGESTION_API_KEY");
 }
 
+def getOtplessClientId() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("CLIENT_ID");
+}
+
+def getOtplessClientSecret() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("CLIENT_SECRET");
+}
+
 android {
     namespace 'dev.pattabiraman.webserviceutils'
     compileSdk 33
@@ -24,6 +36,8 @@ android {
         manifestPlaceholders = [googleMapViewApiKey          : "${properties.getProperty('MAPVIEW_API_KEY')}",
                                 googleMapAutoSuggestionApiKey: "${properties.getProperty('MAP_SUGGESTION_API_KEY')}"]
         buildConfigField "String", "googleMapAutoSuggestionApiKey", "\"" + getMapSuggestionAPIKey() + "\""
+        buildConfigField "String", "otplessClientId", "\"" + getOtplessClientId() + "\""
+        buildConfigField "String", "otplessClientSecret", "\"" + getOtplessClientSecret() + "\""
     }
 
     buildFeatures {

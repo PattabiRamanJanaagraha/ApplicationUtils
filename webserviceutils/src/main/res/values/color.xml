@@ -7,7 +7,14 @@
     <color name="grayy">#e5e5e5</color>
     <color name="volunteer_title">#040404</color>
     <color name="gray_bottom">#6B737E</color>
-    <color name="colorPrimary">#1976D2</color>
+    <color name="colorPrimary">#FEDA0A</color>
+    <color name="primaryBlack">#0E0F0F</color>
+    <color name="secondaryPink">#E72463</color>
+    <color name="secondaryNeonBlue">#2ACAD9</color>
+    <color name="tertiaryDustyRose">#F0858C</color>
+    <color name="tertiaryMustard">#F6A424</color>
+    <color name="tertiaryGreen">#49B171</color>
+
     <color name="trans_black">#A1000000</color>
     <color name="blue">#0980F4</color>
     <color name="green_following">#72ba32</color>
