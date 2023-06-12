@@ -5,13 +5,13 @@
         <shape android:shape="rectangle">
             <corners android:radius="20dp" />
 
-            <solid android:color="@color/secondaryLight" />
+            <solid android:color="@color/secondaryBlack" />
         </shape>
     </item>
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
             <corners android:radius="20dp" />
-            <solid android:color="@color/secondaryLight" />
+            <solid android:color="@color/secondaryBlack" />
         </shape>
     </item>
 

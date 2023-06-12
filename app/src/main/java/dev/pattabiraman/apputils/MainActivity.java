@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*otpless login */
         OTPlessVerification.OTPlessVerification(activity).setOTPPressCTA(binding.whatsappLogin);
+        //binding.whatsappLogin.performClick();
     }
 
     @Override
