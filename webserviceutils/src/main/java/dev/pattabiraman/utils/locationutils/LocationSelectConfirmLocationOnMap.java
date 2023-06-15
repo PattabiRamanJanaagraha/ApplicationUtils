@@ -47,7 +47,7 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityConfirmLocationOnMap
  * @author Pattabi
  * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
  * <br/>
- * MUST send putExtras("requestCode",102) - value to throwback selected location result
+ * MUST send intent.putExtras("requestCode",102).putExtras("btnConfirmLocationText",TEXT).putExtras("btnDetectLocationText",TEXT) - value to throwback selected location result
  * <br/>
  * MUST use below line in your app/res/values/strings.xml
  * <string name="mapview_api_key" translatable="false">PLACE_MAP_VIEW_API_KEY_HERE</string>
@@ -74,6 +74,10 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
     private final String UPDATING_ADDRESS_STRING = "Updating address...";
     private final String LOADING = "Loading...";
     private int requestCode;
+    private String btnConfirmLocationText = "";
+    private String btnDetectLocationText = "";
+    private int btnConfirmLocationTextColor;
+    private String searchStringText = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,11 +93,21 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         // getIntent().getExtras().getString("MAP_API_KEY");
 
         requestCode = getIntent().getExtras().getInt("requestCode");
+        btnConfirmLocationText = getIntent().getExtras().getString("btnConfirmLocationText");
+        binding.confirmLocation.setText(TextUtils.isEmpty(btnConfirmLocationText) ? "Confirm Location" : btnConfirmLocationText);
+
+        btnDetectLocationText = getIntent().getExtras().getString("btnDetectLocationText");
+        btnConfirmLocationTextColor = getIntent().getExtras().getInt("btnConfirmLocationTextColor");
+        binding.confirmLocation.setTextColor(btnConfirmLocationTextColor);
+
+        searchStringText = getIntent().getExtras().getString("searchStringText");
+        binding.change.setText(TextUtils.isEmpty(searchStringText) ? "Search" : searchStringText);
+
         builder = new Builder();
         initiateGoogleMaps();
 
         setToolbarAndCustomizeTitle();
-        binding.change.setOnClickListener(v -> activity.startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY)));
+        binding.change.setOnClickListener(v -> activity.startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true).putExtra("btnDetectLocationText", TextUtils.isEmpty(btnDetectLocationText) ? "Detect my location" : btnDetectLocationText).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY)));
 
         PluginAppConstant.location = UPDATING_ADDRESS_STRING;
         binding.confirmLocation.setVisibility(View.INVISIBLE);
@@ -173,14 +187,14 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
                 binding.selectedLocationText.setText(PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
                 PluginAppConstant.latitude = 0.0;
                 PluginAppConstant.longitude = 0.0;
-                startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true));
+                startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true).putExtra("btnDetectLocationText", TextUtils.isEmpty(btnConfirmLocationText) ? "Detect my location" : btnDetectLocationText).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY));
                 mMap.setOnCameraIdleListener(() -> {
                     if (PluginAppConstant.latitude != 0.0) {
                         builder = new Builder();
                         builder.include(new LatLng(PluginAppConstant.latitude, PluginAppConstant.longitude));
                         animateToLocation(builder);
                     } else {
-                        startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true));
+                        startActivity(new Intent(activity, LocationSearchAutoCompleteActivity.class).putExtra("isToShowDetectMyLocation", true).putExtra("btnDetectLocationText", TextUtils.isEmpty(btnConfirmLocationText) ? "Detect my location" : btnDetectLocationText).putExtra("MAP_API_KEY", PluginAppConstant.MAP_API_KEY));
                     }
                 });
             }

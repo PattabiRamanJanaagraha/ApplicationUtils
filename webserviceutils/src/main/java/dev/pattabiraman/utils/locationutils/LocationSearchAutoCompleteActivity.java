@@ -38,7 +38,9 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityOtherLocationSearchB
 
 /**
  * @author Pattabi
- * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS
+ * @apiNote MUST DECLARE<br/> dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap <br/>IN YOUR PROJECT MANIFEST TO REQUEST RUNTIME PERMISSIONS <br/>
+ * intent.putExtras("btnDetectLocationText",TEXT)
+ * <p>
  * <br/>
  */
 public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActivity implements
@@ -75,6 +77,7 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
         onClear();
         try {
             isToShowDetectMyLocation = getIntent().getExtras().getBoolean("isToShowDetectMyLocation");
+            binding.btnDetectLocation.setText(getIntent().getExtras().getString("btnDetectLocationText"));
         } catch (Exception e) {
             isToShowDetectMyLocation = false;
         }

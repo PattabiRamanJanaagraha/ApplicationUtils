@@ -71,7 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         /*pick a location*/
         binding.btnLocationPicker.setOnClickListener(v -> {
-            activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class).putExtra("requestCode", 102), 102);
+            activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class)
+                            .putExtra("requestCode", 102)
+                            .putExtra("btnConfirmLocationText", "Confirm Location")
+                            .putExtra("btnDetectLocationText", "Detect my location")
+                            .putExtra("btnConfirmLocationTextColor", getColor(R.color.white))
+                            .putExtra("searchStringText", "Search")
+                    , 102);
         });
 
         /*pick a date*/
