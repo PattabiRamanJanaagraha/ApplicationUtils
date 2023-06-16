@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,29 +26,27 @@
             android:id="@+id/date_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="@dimen/margin16dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/start_date"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/etDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/edittext_bg_"
                 android:focusableInTouchMode="false"
-                android:inputType="date"
-                android:text="Date" />
+                android:fontFamily="@font/raleway_bold"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/margin16dp"
+                android:paddingEnd="@dimen/margin16dp"
+                android:text="20 July 2023 at 08:13 PM"
+                android:textColor="@color/primerColorBlack"
+                android:textSize="@dimen/textSize18dp"
+                tools:ignore="RtlSymmetry" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/end_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:focusableInTouchMode="false"
-                android:inputType="date"
-                android:text="end date"
-                android:visibility="gone" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatButton

@@ -110,6 +110,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                 tvCamera.setCompoundDrawables(null, null, null, null);
             }
             tvCamera.setOnClickListener(v -> {
+                ab.dismiss();
                 checkForCameraPermission();
             });
         }
@@ -123,6 +124,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                 tvGallery.setCompoundDrawables(null, null, null, null);
             }
             tvGallery.setOnClickListener(v -> {
+                ab.dismiss();
                 checkForStoragePermission(new OnTaskCompleted() {
                     @Override
                     public void onTaskSuccess(JSONObject jsonObject) {
@@ -137,6 +139,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
             });
         }
         if (tvCancel != null) {
+            ab.dismiss();
             /*customise name*/
             if (!TextUtils.isEmpty(cancelBtnText))
                 tvCancel.setText(cancelBtnText);
@@ -223,7 +226,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     PluginAppUtils.getInstance(activity).showToast(activity, "You have cancelled image selection");
                 } else {
 //                    AppHelperMethods.getInstance(activity).showToast(activity, "Please select an image");
-                    if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
+                    if (clickTypeAutomate != PluginAppConstant.CLICK_TYPE_NONE) {
                         activity.finish();
                     }
                 }
@@ -235,7 +238,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
 //                    doCrop(uri);
                 } else {
 //                    AppHelperMethods.getInstance(activity).showToast(activity, "Please select an image again");
-                    if(clickTypeAutomate!=PluginAppConstant.CLICK_TYPE_NONE){
+                    if (clickTypeAutomate != PluginAppConstant.CLICK_TYPE_NONE) {
                         activity.finish();
                     }
                 }

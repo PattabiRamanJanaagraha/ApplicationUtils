@@ -4,64 +4,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class DateRangeFilterModel implements Serializable {
-    private String mStarteDate;
-    private String mEndDate;
-    private Date chosenStartDate;
-    private Date chosenEndDate;
-    private int differenceInMonths;
+    private String mDateString;
+    private Date mDateObject;
 
-    public DateRangeFilterModel(String mStarteDate, String mEndDate, Date chosenStartDate, Date chosenEndDate){
-        setmStarteDate(mStarteDate);
-        setmEndDate(mEndDate);
-        setChosenStartDate(chosenStartDate);
-        setChosenEndDate(chosenEndDate);
+    public DateRangeFilterModel(String mStarteDate, Date chosenStartDate) {
+        setmDateString(mStarteDate);
+        setmDateObject(chosenStartDate);
     }
 
-    public Date getChosenStartDate() {
-        return chosenStartDate;
+    public Date getmDateObject() {
+        return mDateObject;
     }
 
-    public void setChosenStartDate(Date chosenStartDate) {
-        this.chosenStartDate = chosenStartDate;
-    }
-
-    public Date getChosenEndDate() {
-        return chosenEndDate;
-    }
-
-    public void setChosenEndDate(Date chosenEndDate) {
-        this.chosenEndDate = chosenEndDate;
+    public void setmDateObject(Date mDateObject) {
+        this.mDateObject = mDateObject;
     }
 
     public Date getChosenDate() {
-        return chosenStartDate;
+        return mDateObject;
     }
 
     public void setChosenDate(Date chosenDate) {
-        this.chosenStartDate = chosenDate;
+        this.mDateObject = chosenDate;
     }
 
-    public String getmStarteDate() {
-        return mStarteDate;
+    public String getmDateString() {
+        return mDateString;
     }
 
-    public void setmStarteDate(String mStarteDate) {
-        this.mStarteDate = mStarteDate;
+    public void setmDateString(String mDateString) {
+        this.mDateString = mDateString;
     }
 
-    public String getmEndDate() {
-        return mEndDate;
-    }
-
-    public void setmEndDate(String mEndDate) {
-        this.mEndDate = mEndDate;
-    }
-
-    public int getDifferenceInMonths() {
-        return differenceInMonths;
-    }
-
-    public void setDifferenceInMonths(int differenceInMonths) {
-        this.differenceInMonths = differenceInMonths;
-    }
+    
 }

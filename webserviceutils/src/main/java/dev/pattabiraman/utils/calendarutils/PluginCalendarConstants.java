@@ -10,8 +10,7 @@ import dev.pattabiraman.utils.model.DateRangeFilterModel;
 
 public class PluginCalendarConstants {
     private static PluginCalendarConstants mInstance;
-    public DateRangeFilterModel mSelectedStartDateModel;
-    public DateRangeFilterModel mSelectedEndDateModel;
+    public DateRangeFilterModel mSelectedDateModel;
 
     public static PluginCalendarConstants getInstance() {
         return mInstance == null ? mInstance = new PluginCalendarConstants() : mInstance;

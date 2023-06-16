@@ -25,6 +25,7 @@ import dev.pattabiraman.utils.locationutils.LocationSelectConfirmLocationOnMap;
 import dev.pattabiraman.utils.model.DateRangeFilterModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.PluginWebserviceHelper;
+import dev.pattabiraman.webserviceutils.BuildConfig;
 
 public class MainActivity extends AppCompatActivity {
     private AppCompatActivity activity;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         activity = MainActivity.this;
         AppHelperMethods.getInstance(activity).setToTraceLog(true);
-        
+
         binding.runWebService.setOnClickListener(V -> {
             /**
              * @apiNote set this method to true to trace log. if this method is not called, by default no traces are logged in logcat view*/
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnLocationPicker.setOnClickListener(v -> {
             activity.startActivityForResult(new Intent(activity, LocationSelectConfirmLocationOnMap.class)
                             .putExtra("requestCode", 102)
+                            .putExtra("MAP_API_KEY", BuildConfig.googleMapAutoSuggestionApiKey)
                             .putExtra("btnConfirmLocationText", "Confirm Location")
                             .putExtra("btnDetectLocationText", "Detect my location")
                             .putExtra("btnConfirmLocationTextColor", getColor(R.color.white))
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*pick a date*/
         binding.btnPickADate.setOnClickListener(v -> {
-            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103), 103);
+            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103).putExtra("isToSelectTime", true), 103);
         });
 
         /*otpless login */
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 case 103:
                     if (data != null) {
                         DateRangeFilterModel mSelectDateModel = (DateRangeFilterModel) data.getSerializableExtra("result");
-                        binding.btnPickADate.setText(mSelectDateModel.getmStarteDate());
+                        binding.btnPickADate.setText(mSelectDateModel.getmDateString());
                     }
                     break;
             }
