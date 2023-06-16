@@ -62,6 +62,7 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
                 PluginCalendarConstants.getInstance().mSelectedDateModel = new DateRangeFilterModel(Objects.requireNonNull(binding.etDate.getText()).toString(), chosenDate);
                 CalendarSinglaDateSelectActivity.this.chosenDate = chosenDate;
                 if (!isToSelectTime) {
+                    PluginCalendarConstants.getInstance().mSelectedDateModel.setmDateString(mStart_date);
                     binding.etDate.setText(mStart_date);
                 } else {
                     showTimePickerDialog(PluginCalendarConstants.getInstance().mSelectedDateModel);
