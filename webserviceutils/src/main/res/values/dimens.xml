@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Pattabi Raman on 11/05/23, 3:20 PM
+  ~ Copyright (c) 2023 . All rights reserved.
+  ~ Last modified 11/05/23, 3:20 PM
+  -->
+
+<resources>
+    <dimen name="tabIndicatorSize">4dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_default">16sp</dimen>
+    <dimen name="text_size_secondary">14sp</dimen>
+    <dimen name="default_height">48dp</dimen>
+    <dimen name="tab_label">12sp</dimen>
+    <dimen name="very_small">11sp</dimen>
+    <dimen name="custom_tab_layout_height">60dp</dimen>
+    <dimen name="textSize10dp">10sp</dimen>
+    <dimen name="textSize16dp">16sp</dimen>
+    <dimen name="textSize14dp">14sp</dimen>
+    <dimen name="textSize17dp">17sp</dimen>
+    <dimen name="textSize18dp">18sp</dimen>
+    <dimen name="textSize12dp">12sp</dimen>
+    <dimen name="textSize20dp">20sp</dimen>
+    <dimen name="textSize32dp">32sp</dimen>
+
+    <dimen name="margin24dp">24dp</dimen>
+    <dimen name="margin16dp">16dp</dimen>
+    <dimen name="margin20dp">20dp</dimen>
+    <dimen name="margin40dp">40dp</dimen>
+    <dimen name="margin56dp">56dp</dimen>
+
+    <dimen name="horizontal_vertical_spacing">8dp</dimen>
+    <dimen name="margin80dp">80dp</dimen>
+    <dimen name="margin180dp">180dp</dimen>
+    <dimen name="text_size_26sp">26sp</dimen>
+    <dimen name="user_image_size_primary">60dp</dimen>
+    <dimen name="user_image_size">42dp</dimen>
+    <dimen name="margin_32dp">32dp</dimen>
+    <dimen name="margin30dp">30dp</dimen>
+</resources>

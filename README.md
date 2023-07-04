@@ -1,5 +1,5 @@
 # AppUtils
-Simple App utils library customised with callbacks.
+Simple App utils library with commonly used features like Permissions, image picker, location picker and calendar utilities that are customised with callbacks.
 
 ***
 
@@ -29,10 +29,14 @@ Thrid party framewoks and Library are managed Github.
 ## Folder Structure and Architecture
 
 * Each Module Will have its own folder
-    - webserviceutils
-       - callback
-       - model
-       - webservice
+    - utils
+       - calendarutils (Date and time pickers)
+       - callback (callbacks that works with this library and independently)
+       - imagepickerutils (pick image)
+       - locationutils (pick location from Google maps/search by typing and pick from auto-suggestion)
+       - model (model classes)
+       - permissionutils (runtime permissions)
+       - webservice (API calls)
 
 
 # Contributors

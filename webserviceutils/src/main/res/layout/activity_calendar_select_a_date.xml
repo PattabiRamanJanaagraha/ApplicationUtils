@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin16dp"
+        android:padding="@dimen/horizontal_vertical_spacing"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+        android:tint="@android:color/black" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ivBack"
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/etDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg_"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/raleway_bold"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/margin16dp"
+                android:paddingEnd="@dimen/margin16dp"
+                android:text="20 July 2023 at 08:13 PM"
+                android:textColor="@color/primerColorBlack"
+                android:textSize="@dimen/textSize18dp"
+                tools:ignore="RtlSymmetry" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit_calendar_filter"
+            style="@style/ButtonTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:maxLines="1"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_default" />
+    </RelativeLayout>
+</RelativeLayout>

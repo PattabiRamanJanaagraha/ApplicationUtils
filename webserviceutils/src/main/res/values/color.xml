@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- A really bright Holo shade of gray -->
+    <color name="red">#D50000</color>
+    <!-- A light Holo shade of blue -->
+    <!-- A light Holo shade of gray -->
+    <color name="grayy">#e5e5e5</color>
+    <color name="volunteer_title">#040404</color>
+    <color name="gray_bottom">#6B737E</color>
+    <color name="colorPrimary">#FEDA0A</color>
+    <color name="primaryBlack">#0E0F0F</color>
+    <color name="secondaryPink">#E72463</color>
+    <color name="secondaryNeonBlue">#2ACAD9</color>
+    <color name="tertiaryDustyRose">#F0858C</color>
+    <color name="tertiaryMustard">#F6A424</color>
+    <color name="tertiaryGreen">#49B171</color>
+
+    <color name="trans_black">#A1000000</color>
+    <color name="blue">#0980F4</color>
+    <color name="green_following">#72ba32</color>
+    <color name="pswdcolor">#8C757575</color>
+    <color name="image_tint">#c0c0c0</color>
+    <!-- TEXTCOLOR -->
+
+    <color name="layout_bg">#333333</color>
+    <!-- A light Holo shade of blue -->
+    <!-- A light Holo shade of gray -->
+    <!-- A light Holo shade of green -->
+    <color name="holo_green_light">#ff99cc00</color>
+    <!-- A light Holo shade of red -->
+    <color name="holo_red_light">#ffff4444</color>
+    <!-- A dark Holo shade of blue -->
+    <!-- A dark Holo shade of green -->
+    <!-- A dark Holo shade of red -->
+    <!-- A Holo shade of purple -->
+    <!-- A light Holo shade of orange -->
+    <color name="holo_orange_light">#ffffbb33</color>
+    <!-- A dark Holo shade of orange -->
+    <!-- A really bright Holo shade of blue -->
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <!-- A really bright Holo shade of gray -->
+    <color name="light_grey">#e5e5e5</color>
+    <color name="dark_trans">#AA000000</color>
+    <color name="black">#212121</color>
+    <color name="yellow">#ffd61c</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="lt_gray">#E5E5E5</color>
+    <color name="red_reopn_open">#F6695E</color>
+    <color name="green_resolved">#00BD00</color>
+    <color name="blue_on_the_job">#2BB5F9</color>
+    <color name="gray_closed">#607D8B</color>
+    <color name="blue_fab_bg">#0981fc</color>
+    <color name="gray_secorndary">#9b9b9b</color>
+    <color name="colorAccent">#FFD180</color>
+    <color name="secondary_text_color">#343A40</color>
+    <color name="white_edittext">#fafafa</color>
+    <color name="complaint_id_bgcolor">#e6e6e6</color>
+    <color name="gray_bg_volunteer_direction_share_btn_bg">#666666</color>
+    <color name="volunteer_desc">#9c9c9c</color>
+    <color name="view_color">#E5E5E5</color>
+    <color name="primerColorBlack">#242132</color>
+    <color name="primary">#1976D2</color>
+    <color name="secondary">#FCB503</color>
+    <color name="secondaryLight">#FFE74D</color>
+    <color name="secondaryBlack">#343A40</color>
+    <color name="primerColorWhite">#FCF2EC</color>
+    <color name="primerColorGreen">#249185</color>
+    <color name="tertiaryLight">#5CD0C3</color>
+    <color name="tertiaryBlack">#757575</color>
+    <color name="primaryDark">#004BA0</color>
+    <color name="primaryLightDim">#E8F5FF</color>
+    <color name="primaryLight">#9BD5FF</color>
+    <color name="grey">#DBDBDB</color>
+    <color name="greySecondary">#727272</color>
+    <color name="greyDark">#A9A9A9</color>
+    <color name="greyLight">#e5e5e5</color>
+
+    <!--Complaints card BG-->
+
+    <!--Events card BG-->
+
+
+    <!--360 degree-->
+
+    <!--Random light colors-->
+
+
+    <!--Trending-->
+    <color name="yellow_pac_bg">#FEC841</color>
+
+</resources>

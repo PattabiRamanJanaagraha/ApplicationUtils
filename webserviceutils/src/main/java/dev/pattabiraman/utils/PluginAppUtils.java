@@ -8,6 +8,7 @@ package dev.pattabiraman.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,8 +18,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -44,11 +47,12 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Objects;
 
+import dev.pattabiraman.utils.callback.OnButtonClick;
+import dev.pattabiraman.utils.locationutils.GPSTracker;
 import dev.pattabiraman.utils.model.HTTPCodeModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
-import dev.pattabiraman.webserviceutils.R;
-import dev.pattabiraman.utils.callback.OnButtonClick;
 import dev.pattabiraman.utils.webservice.LruBitmapCache;
+import dev.pattabiraman.webserviceutils.R;
 
 public class PluginAppUtils {
     private RequestQueue mRequestQueue;
@@ -65,7 +69,9 @@ public class PluginAppUtils {
     }
 
     public void showToast(final AppCompatActivity activity, final String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        final Toast toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     public RequestQueue getRequestQueue() {
@@ -197,9 +203,9 @@ public class PluginAppUtils {
                             .showToast(act, "Session Expired, Login again");
                     break;
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
-                   /* PluginAppUtils.getInstance(activity).showToast(act,
+                   /* AppHelperMethods.getInstance(activity).showToast(act,
                             responseObject.optString("message"));*/
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     break;
                 case HTTPCodeModel.HTTP_CONNECTION_TIME_OUT:
                 case HTTPCodeModel.HTTP_TIME_OUT:
@@ -209,7 +215,7 @@ public class PluginAppUtils {
                     break;
                 default:
                     errors = new StringBuilder(responseObject.optString("message") + "");
-                    PluginAppUtils.getInstance(activity).traceLog("error", responseObject + "");
+                    AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     PluginAppUtils.getInstance(activity).showToast(act, errors.toString());
                     break;
             }
@@ -321,8 +327,30 @@ public class PluginAppUtils {
         return bitmap;
     }
 
-    public void traceLog(final String key, final String value) {
-        Log.e("TAG-->" + key, "VALUE-->" + value);
+
+    public boolean setLatitudeLongitude(AppCompatActivity activity) {
+        GPSTracker gps = new GPSTracker(activity);
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+            PluginAppConstant.latitude = gps.getLatitude();
+            PluginAppConstant.longitude = gps.getLongitude();
+            return true;
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+            return false;
+        }
     }
 
+    /**
+     * @param activity AppCompatActivity object of calling class
+     * @param view     Respective target view of active window to hide keyboard
+     */
+    public void hideKeyboard(AppCompatActivity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
