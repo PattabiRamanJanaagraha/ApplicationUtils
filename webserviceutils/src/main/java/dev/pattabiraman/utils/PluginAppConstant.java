@@ -20,6 +20,12 @@ public class PluginAppConstant {
     private static PluginAppConstant mInstance;
 
 
+    /**
+     * The function returns an instance of the PluginAppConstant class, creating a new instance if one
+     * does not already exist.
+     *
+     * @return The method is returning an instance of the PluginAppConstant class.
+     */
     public static PluginAppConstant getInstance() {
         return mInstance == null ? mInstance = new PluginAppConstant() : mInstance;
     }
@@ -50,8 +56,17 @@ public class PluginAppConstant {
      */
     public static final int CLICK_TYPE_NONE = -4;
 
+   /**
+    * Creates a new instance of the `SelectedImageModel` class and assigning it to the `selectedImageModel`
+     variable. This allows the `selectedImageModel` variable to hold an object of type
+     `SelectedImageModel` and access its properties and methods.*/
     public SelectedImageModel selectedImageModel = new SelectedImageModel();
 
+    /**
+     * The function returns the selected image model.
+     *
+     * @return The method is returning an object of type SelectedImageModel.
+     */
     public SelectedImageModel getSelectedImageModel() {
         return selectedImageModel;
     }

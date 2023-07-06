@@ -83,6 +83,7 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
     }
 
     /**
+     * The function checks if a date is selected and displays a toast message if it is not.
      * @return is selected date valid
      */
     public boolean onValidation() {
@@ -93,6 +94,14 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
         return true;
     }
 
+    /**
+     * The function `showTimePickerDialog` displays a TimePickerDialog and allows the user to select a
+     * time, which is then used to update the chosenDate and mSelectedDateModel variables.
+     *
+     * @param mSelectDateModel The `mSelectDateModel` parameter is an instance of the
+     * `DateRangeFilterModel` class. It is used to store and manipulate the selected date and time
+     * values.
+     */
     private void showTimePickerDialog(DateRangeFilterModel mSelectDateModel) {
         // Get the TimePicker view
         TimePicker timePicker = new TimePicker(activity);

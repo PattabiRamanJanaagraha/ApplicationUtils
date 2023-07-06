@@ -52,7 +52,12 @@ import dev.pattabiraman.utils.webservice.VolleyMultipartRequest;
 import dev.pattabiraman.utils.webservice.VolleySingleton;
 import dev.pattabiraman.webserviceutils.R;
 
-public class AppHelperMethods {
+ /**
+  * The AppHelperMethods class is a utility class in Java that provides various helper methods for
+  * handling network requests, displaying toast messages, showing progress dialogs, handling errors,
+  * and logging traces.
+  */
+ public class AppHelperMethods {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static AppHelperMethods mInstance;
@@ -62,15 +67,39 @@ public class AppHelperMethods {
 
     private static AppCompatActivity activity;
 
+    /**
+     * The getInstance method returns an instance of the AppHelperMethods class, creating a new
+     * instance if one does not already exist.
+     *
+     * @param appCompaitActivity The appCompaitActivity parameter is an instance of the
+     * AppCompatActivity class, which is a base class for activities that use the support library
+     * action bar features. It is used to reference the current activity in which the AppHelperMethods
+     * instance is being created.
+     * @return The method is returning an instance of the AppHelperMethods class.
+     */
     public static AppHelperMethods getInstance(AppCompatActivity appCompaitActivity) {
         activity = appCompaitActivity;
         return mInstance == null ? mInstance = new AppHelperMethods() : mInstance;
     }
 
+    /**
+     * The function showToast displays a toast message with a given message on an activity.
+     *
+     * @param activity The activity parameter is the reference to the current activity in which the
+     * toast message will be displayed. It is of type AppCompatActivity, which is a subclass of the
+     * Android Activity class.
+     * @param message The message parameter is a string that represents the text that will be displayed
+     * in the toast message.
+     */
     public void showToast(final AppCompatActivity activity, final String message) {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * The function returns the request queue, creating a new one if it doesn't exist.
+     *
+     * @return The method is returning the RequestQueue object.
+     */
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(activity);
@@ -79,6 +108,12 @@ public class AppHelperMethods {
         return mRequestQueue;
     }
 
+    /**
+     * The function returns an instance of the ImageLoader class, creating it if it doesn't already
+     * exist.
+     *
+     * @return The method is returning an instance of the ImageLoader class.
+     */
     public ImageLoader getImageLoader() {
         getRequestQueue();
         if (mImageLoader == null) {
@@ -88,6 +123,17 @@ public class AppHelperMethods {
         return this.mImageLoader;
     }
 
+    /**
+     * The function adds a request to the request queue with a specified tag and sets a default retry
+     * policy.
+     *
+     * @param req The req parameter is an instance of the Request class, which represents a network
+     * request to be added to the request queue. It can be any type of request, such as a
+     * StringRequest, JsonObjectRequest, or ImageRequest.
+     * @param tag The "tag" parameter is a string that is used to identify the request. It can be used
+     * later to cancel or find the request in the request queue. If the "tag" parameter is empty or
+     * null, a default tag will be set.
+     */
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setRetryPolicy(new DefaultRetryPolicy(
@@ -98,17 +144,40 @@ public class AppHelperMethods {
         getRequestQueue().add(req);
     }
 
+    /**
+     * The function adds a request to the request queue and assigns a tag to it.
+     *
+     * @param req The parameter "req" is an instance of the Request class, which represents a network
+     * request to be made. It can be of any type, as indicated by the generic type parameter <T>.
+     */
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
     }
 
+    /**
+     * The function cancels all pending requests with a specific tag in a request queue.
+     *
+     * @param tag The "tag" parameter is used to identify and cancel all pending requests that have
+     * been added to the request queue with the same tag. It can be any object that uniquely identifies
+     * a group of requests.
+     */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
     }
 
+    /**
+     * The function `handleVolleyError` handles different types of Volley errors and displays
+     * appropriate error messages based on the HTTP response code.
+     *
+     * @param act The parameter "act" is of type AppCompatActivity. It represents the current activity
+     * in which the method is being called.
+     * @param volleyError The `volleyError` parameter is an instance of the `VolleyError` class, which
+     * is an error that occurred during a Volley network request. It contains information about the
+     * error, such as the network response and any error messages.
+     */
     public void handleVolleyError(final AppCompatActivity act,
                                   final VolleyError volleyError) {
         NetworkResponse response = volleyError.networkResponse;
@@ -227,8 +296,11 @@ public class AppHelperMethods {
     private static Dialog progressDialog;
 
     /**
-     * @param activity AppCompatActivity object of calling class
-     * @param isToShow boolean - whether to show progress dialog or not
+     * The function `showProgressDialog` displays or hides a progress dialog in an Android activity.
+     *
+     * @param activity The activity parameter is the reference to the current AppCompatActivity. It is
+     * used to create the dialog and show it on the screen.
+     * @param isToShow A boolean value indicating whether to show or hide the progress dialog.
      */
     public void showProgressDialog(final AppCompatActivity activity, final Boolean isToShow) {
         try {
@@ -251,6 +323,25 @@ public class AppHelperMethods {
         }
     }
 
+    /**
+     * The function `uploadImage` is a Java method that uploads an image file to a specified URL using
+     * Volley library, and it includes options for showing a progress dialog, handling success and
+     * failure callbacks, and setting request headers.
+     *
+     * @param activity The `activity` parameter is an instance of the `AppCompatActivity` class. It is
+     * used to show the progress dialog and handle any UI-related tasks.
+     * @param uploadImageURL The URL where the image will be uploaded.
+     * @param params A map containing additional parameters to be sent along with the image upload
+     * request.
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * uploading the image.
+     * @param onTaskCompleted The `onTaskCompleted` parameter is an interface that defines two methods:
+     * `onTaskSuccess` and `onTaskFailure`. These methods are called when the upload task is completed
+     * successfully or encounters an error, respectively. You need to implement this interface and pass
+     * an instance of it to the `upload
+     * @param requestHeaders A HashMap containing the headers to be included in the request. The keys
+     * represent the header names, and the values represent the header values.
+     */
     private void uploadImage(final AppCompatActivity activity, final String uploadImageURL, final Map<String, String> params, final boolean isToShowProgressDialog, final OnTaskCompleted onTaskCompleted, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog)
             showProgressDialog(activity, true);
@@ -303,11 +394,15 @@ public class AppHelperMethods {
     }
 
     /**
-     * Turn drawable resource into byte array.
+     * The function retrieves file data from a drawable resource in Android and returns it as a byte
+     * array.
      *
-     * @param context parent context
-     * @param id      drawable resource id
-     * @return byte array
+     * @param context The context parameter is an instance of the AppCompatActivity class, which
+     * represents the current activity context in an Android application. It is used to access
+     * resources and perform various operations within the activity.
+     * @param id The id parameter is the resource id of the drawable image that you want to convert to
+     * byte array.
+     * @return The method is returning a byte array.
      */
     public static byte[] getFileDataFromDrawable(AppCompatActivity context, int id) {
         try {
@@ -322,10 +417,19 @@ public class AppHelperMethods {
         return new byte[1024];
     }
 
+
     /**
-     * Turn SelectedImageModel drawable into byte array.
+     * The function takes an image URI, compresses it as a JPEG with 50% quality, and returns the byte
+     * array of the compressed image data.
      *
-     * @return byte array
+     * @param context The context parameter is an instance of the AppCompatActivity class, which
+     * represents the current activity or context in which the method is being called. It is used to
+     * access resources and perform operations related to the activity.
+     * @param path The "path" parameter is an instance of the "SelectedImageModel" class, which
+     * contains information about the selected image. It likely includes the URI of the image, which is
+     * used to retrieve the image data using the ContentResolver.
+     * @return The method is returning a byte array, which represents the file data of the selected
+     * image.
      */
     public static byte[] getFileDataFromDrawable(final AppCompatActivity context, final SelectedImageModel path) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -341,6 +445,22 @@ public class AppHelperMethods {
         return byteArrayOutputStream.toByteArray();
     }
 
+    /**
+     * The function showAlert displays an alert dialog with a title, message, and optional negative
+     * button, and executes the appropriate callback when the positive or negative button is clicked.
+     *
+     * @param activity The activity parameter is the reference to the current AppCompatActivity. It is
+     * used to display the AlertDialog on the screen.
+     * @param title The title of the alert dialog box. It is displayed at the top of the dialog box.
+     * @param message The message parameter is a string that represents the content of the alert
+     * dialog. It is the main text that will be displayed to the user.
+     * @param isToShowNegativeButton A boolean value indicating whether or not to show a negative
+     * button in the alert dialog. If set to true, a "Cancel" button will be displayed. If set to
+     * false, no negative button will be displayed.
+     * @param onButtonClick onButtonClick is an interface that defines two methods:
+     * onPositiveButtonClicked and onNegativeButtonClicked. These methods are called when the positive
+     * and negative buttons of the AlertDialog are clicked, respectively.
+     */
     public void showAlert(final AppCompatActivity activity, final String title, final String message,
                           final boolean isToShowNegativeButton, final
                           OnButtonClick onButtonClick) {
@@ -357,23 +477,33 @@ public class AppHelperMethods {
     }
 
     /**
-     * @return boolean - is trace log enabled
+     * The function returns a boolean value indicating whether to enable trace logging.
+     *
+     * @return The method is returning the value of the variable "isToTraceLog".
      */
     public boolean isToTraceLog() {
         return this.isToTraceLog;
     }
 
     /**
-     * @param toTraceLog boolean to denote whether log has to be traced or not
-     * @apiNote Must call this method passing true to log the traces. By default the logs are not traced
+     * The function sets a boolean variable to determine whether to enable tracing logs.
+     *
+     * @param toTraceLog The "toTraceLog" parameter is a boolean value that determines whether or not
+     * to enable tracing logs. If set to true, tracing logs will be enabled. If set to false, tracing
+     * logs will be disabled.
      */
     public void setToTraceLog(boolean toTraceLog) {
         this.isToTraceLog = toTraceLog;
     }
 
+
     /**
-     * @param key   String value of key which can be variable name / string value
-     * @param value String value of key which can be variable value / string value
+     * The function "traceLog" logs the key-value pair if tracing is enabled.
+     *
+     * @param key The key parameter is a string that represents the key for the log entry. It is used
+     * to identify the specific log entry in the log output.
+     * @param value The "value" parameter is a string that represents the value associated with the
+     * given key.
      */
     public void traceLog(final String key, final String value) {
         if (isToTraceLog())

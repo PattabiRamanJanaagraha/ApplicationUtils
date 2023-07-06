@@ -63,6 +63,14 @@ public class PluginAppUtils {
 
     private static AppCompatActivity activity;
 
+    /**
+     * The function returns an instance of PluginAppUtils, creating a new instance if it doesn't
+     * already exist.
+     *
+     * @param appCompaitActivity The parameter "appCompaitActivity" is of type AppCompatActivity and
+     * represents the current activity in which the PluginAppUtils instance is being created.
+     * @return The method is returning an instance of the PluginAppUtils class.
+     */
     public static PluginAppUtils getInstance(AppCompatActivity appCompaitActivity) {
         activity = appCompaitActivity;
         return mInstance == null ? mInstance = new PluginAppUtils() : mInstance;
@@ -74,6 +82,11 @@ public class PluginAppUtils {
         toast.show();
     }
 
+    /**
+     * The function returns the request queue, creating a new one if it doesn't exist.
+     *
+     * @return The method is returning the RequestQueue object.
+     */
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(activity);
@@ -82,6 +95,12 @@ public class PluginAppUtils {
         return mRequestQueue;
     }
 
+    /**
+     * The function returns an instance of the ImageLoader class, creating it if it doesn't already
+     * exist.
+     *
+     * @return The method is returning an instance of the ImageLoader class.
+     */
     public ImageLoader getImageLoader() {
         getRequestQueue();
         if (mImageLoader == null) {
@@ -91,6 +110,17 @@ public class PluginAppUtils {
         return this.mImageLoader;
     }
 
+    /**
+     * The function adds a request to the request queue with a specified tag and sets a default retry
+     * policy.
+     *
+     * @param req The req parameter is an instance of the Request class, which represents a network
+     * request to be added to the request queue. It can be any type of request, such as a
+     * StringRequest, JsonObjectRequest, or ImageRequest.
+     * @param tag The "tag" parameter is a string that is used to identify the request. It can be used
+     * later to cancel or find the request in the request queue. If the "tag" parameter is empty or
+     * null, a default tag will be set.
+     */
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         req.setRetryPolicy(new DefaultRetryPolicy(
@@ -101,17 +131,40 @@ public class PluginAppUtils {
         getRequestQueue().add(req);
     }
 
+    /**
+     * The function adds a request to the request queue and assigns a tag to it.
+     *
+     * @param req The parameter "req" is an instance of the Request class, which represents a network
+     * request to be made. It can be of any type, as indicated by the generic type parameter <T>.
+     */
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
     }
 
+    /**
+     * The function cancels all pending requests with a specific tag in a request queue.
+     *
+     * @param tag The "tag" parameter is used to identify and cancel all pending requests that have
+     * been added to the request queue with the same tag. It can be any object that uniquely identifies
+     * a group of requests.
+     */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
     }
 
+    /**
+     * The function handles different types of Volley errors and displays appropriate error messages
+     * based on the HTTP response code.
+     *
+     * @param act The parameter "act" is of type AppCompatActivity. It represents the current activity
+     * in which the method is being called.
+     * @param volleyError The `volleyError` parameter is an instance of the `VolleyError` class, which
+     * is an error that occurred during a Volley network request. It contains information about the
+     * error, such as the network response and any error messages.
+     */
     public void handleVolleyError(final AppCompatActivity act,
                                   final VolleyError volleyError) {
         NetworkResponse response = volleyError.networkResponse;
@@ -229,9 +282,14 @@ public class PluginAppUtils {
 
     private static Dialog progressDialog;
 
+
     /**
-     * @param activity AppCompatActivity object of calling class
-     * @param isToShow boolean - whether to show progress dialog or not
+     * The function `showProgressDialog` displays or dismisses a progress dialog in an Android
+     * activity.
+     *
+     * @param activity The activity parameter is the reference to the current AppCompatActivity where
+     * the progress dialog will be shown.
+     * @param isToShow A boolean value indicating whether to show or hide the progress dialog.
      */
     public void showProgressDialog(final AppCompatActivity activity, final Boolean isToShow) {
         try {
@@ -293,6 +351,23 @@ public class PluginAppUtils {
         return byteArrayOutputStream.toByteArray();
     }
 
+    /**
+     * The function showAlert displays an alert dialog with a title, message, and optional negative
+     * button, and executes the appropriate callback function when the positive or negative button is
+     * clicked.
+     *
+     * @param activity The activity parameter is the reference to the current AppCompatActivity. It is
+     * used to display the AlertDialog on the screen.
+     * @param title The title of the alert dialog box. It is displayed at the top of the dialog box.
+     * @param message The message parameter is a string that represents the content of the alert
+     * dialog. It is the main text that will be displayed to the user.
+     * @param isToShowNegativeButton A boolean value indicating whether or not to show a negative
+     * button in the alert dialog. If set to true, a "Cancel" button will be displayed. If set to
+     * false, no negative button will be displayed.
+     * @param onButtonClick onButtonClick is an interface that defines two methods:
+     * onPositiveButtonClicked and onNegativeButtonClicked. These methods are called when the positive
+     * and negative buttons of the AlertDialog are clicked, respectively.
+     */
     public void showAlert(final AppCompatActivity activity, final String title, final String message,
                           final boolean isToShowNegativeButton, final
                           OnButtonClick onButtonClick) {
@@ -308,6 +383,18 @@ public class PluginAppUtils {
         ab.show();
     }
 
+    /**
+     * The function takes a millisecond value and a date format string as input, and returns a
+     * formatted date string.
+     *
+     * @param milliSeconds The milliSeconds parameter is the number of milliseconds since January 1,
+     * 1970, 00:00:00 GMT.
+     * @param dateFormat The dateFormat parameter is a string that specifies the format in which you
+     * want the date to be displayed. It follows the pattern of the SimpleDateFormat class in Java. For
+     * example, "dd/MM/yyyy" represents the date in the format of day/month/year.
+     * @return The method is returning a formatted date string based on the provided milliSeconds and
+     * dateFormat.
+     */
     public String getDate(long milliSeconds, String dateFormat) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
         Calendar calendar = Calendar.getInstance();
@@ -315,6 +402,16 @@ public class PluginAppUtils {
         return formatter.format(calendar.getTime());
     }
 
+    /**
+     * The function retrieves a bitmap image from a given URI and compresses it into a JPEG format with
+     * a quality of 80.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the method is being called.
+     * @param imageURI The imageURI parameter is the URI (Uniform Resource Identifier) of the image
+     * file that you want to retrieve as a Bitmap.
+     * @return The method is returning a Bitmap object.
+     */
     public Bitmap getBitmapFromURI(AppCompatActivity activity, final Uri imageURI) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Bitmap bitmap = null;
@@ -328,6 +425,16 @@ public class PluginAppUtils {
     }
 
 
+    /**
+     * The function sets the latitude and longitude values using the GPS coordinates obtained from the
+     * device, and returns true if successful, otherwise it prompts the user to enable GPS/network
+     * settings and returns false.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which this method is being called.
+     * @return The method returns a boolean value. If the GPS location can be obtained successfully, it
+     * returns true. If the GPS or network is not enabled, it returns false.
+     */
     public boolean setLatitudeLongitude(AppCompatActivity activity) {
         GPSTracker gps = new GPSTracker(activity);
         // check if GPS enabled
@@ -345,8 +452,12 @@ public class PluginAppUtils {
     }
 
     /**
-     * @param activity AppCompatActivity object of calling class
-     * @param view     Respective target view of active window to hide keyboard
+     * The function hides the keyboard on an Android activity.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the keyboard needs to be hidden.
+     * @param view The view parameter is the view that currently has focus and is displaying the
+     * keyboard.
      */
     public void hideKeyboard(AppCompatActivity activity, View view) {
         InputMethodManager imm = (InputMethodManager) activity

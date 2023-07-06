@@ -14,6 +14,10 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The `InputStreamVolleyRequest` class is a custom implementation of the `Request` class in the Volley
+ * library for handling network requests and responses with byte data.
+ */
 public class InputStreamVolleyRequest extends Request<byte[]> {
 
   private final Response.Listener<byte[]> mListener;
@@ -22,6 +26,8 @@ public class InputStreamVolleyRequest extends Request<byte[]> {
   //create a static map for directly accessing headers
   public Map<String, String> responseHeaders;
 
+  /**
+   * The code is a constructor for the `InputStreamVolleyRequest` class.*/
   public InputStreamVolleyRequest(int method, String mUrl, Response.Listener<byte[]> listener,
       Response.ErrorListener errorListener, HashMap<String, String> params) {
     // TODO Auto-generated constructor stub

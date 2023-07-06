@@ -92,6 +92,9 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
         PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
     }
 
+    /**
+     * The function checks for location permission and requests it if necessary.
+     */
     private void checkForLocationPermission() {
         permissionsRequired.clear();
         permissionsRequired.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
@@ -112,6 +115,10 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
         });
     }
 
+    /**
+     * The onClear function clears the text in a search field and hides a clear button if the search
+     * field is not empty.
+     */
     private void onClear() {
         binding.locationClear.setOnClickListener(v -> {
             if (binding.locationsearch.getText().toString().trim().length() > 0) {
@@ -122,6 +129,10 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
         configureEditText();
     }
 
+    /**
+     * The function `configureEditText()` sets up a text watcher for an EditText field, filters a
+     * search adapter based on the entered text, and handles item selection from the search adapter.
+     */
     private void configureEditText() {
         binding.locationsearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -176,6 +187,10 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
     }
 
 
+    /**
+     * The function getCurrentLocation() retrieves the current location of the user and displays a
+     * progress dialog while doing so.
+     */
     private void getCurrentLocation() {
         try {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -213,6 +228,11 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
         }
     }
 
+    /**
+     * The getAddressFromLatLong() function uses the Geocoder class to retrieve the address
+     * corresponding to a given latitude and longitude, and stores it in the PluginAppConstant.location
+     * variable.
+     */
     private void getAddressFromLatLong() {
         Geocoder geocoder;
         List<Address> addresses = null;
@@ -243,6 +263,13 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
 
     }
 
+    /**
+     * The function `getLatLongFromAddress` retrieves the latitude and longitude values of a given
+     * address using the Google Places API.
+     *
+     * @param youraddress The address for which you want to retrieve the latitude and longitude
+     * coordinates.
+     */
     private void getLatLongFromAddress(final String youraddress) {
         PluginAppConstant.isAnyLocationSuggestionClicked = true;
 
