@@ -28,7 +28,12 @@ import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.permissionutils.GetPermissionResult;
 import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
 
-public class MyLocation {
+ /**
+  * The `MyLocation` class is a Java class that provides methods to get the current location of a
+  * device using GPS or network providers and pass the location value to the user code through a
+  * callback.
+  */
+ public class MyLocation {
 
     private Timer timer1;
     private LocationManager lm;
@@ -40,6 +45,21 @@ public class MyLocation {
 
     private int locationToMoveInMetres;
 
+    /**
+     * The function `getLocation` is used to get the current location of the device using GPS or
+     * network providers and pass the location value to the user code through a callback.
+     *
+     * @param context The context parameter is an instance of the AppCompatActivity class, which
+     * represents the current activity or context in which the getLocation method is being called. It
+     * is used to access system services and resources.
+     * @param result The "result" parameter is an instance of the LocationResult interface. It is used
+     * to pass the location value from the MyLocation class to the user code. The user code should
+     * implement the LocationResult interface and override its onLocationResult() method to receive the
+     * location updates.
+     * @param locationToMoveInMetres The parameter `locationToMoveInMetres` is the minimum distance (in
+     * meters) that the device needs to move before the location is updated. This value is used in the
+     * `requestLocationUpdates` method to specify the minimum distance between location updates.
+     */
     public void getLocation(AppCompatActivity context, LocationResult result, int locationToMoveInMetres) {
         MyLocation.activity = context;
         this.locationToMoveInMetres = locationToMoveInMetres;
@@ -93,6 +113,9 @@ public class MyLocation {
 
     }
 
+    /**
+     *  The above code is defining a private final LocationListener called locationListenerGps. This
+     LocationListener is used to listen for changes in the GPS location.*/
     private final LocationListener locationListenerGps = new LocationListener() {
         public void onLocationChanged(Location location) {
             timer1.cancel();
@@ -114,6 +137,11 @@ public class MyLocation {
         }
     };
 
+    /**
+     *  The  code is defining a LocationListener for network-based location updates. When the
+     location is changed, it cancels a timer, calls a method to handle the location result, and
+     requests runtime permissions for accessing fine and coarse location. If the permissions are
+     granted, it removes the network location updates.*/
     private final LocationListener locationListenerNetwork = new LocationListener() {
         public void onLocationChanged(Location location) {
             timer1.cancel();
@@ -231,6 +259,10 @@ public class MyLocation {
 
     }
 
+    /**
+     * The removeLocationUpdates() function removes location updates from both GPS and network
+     * providers, cancels a timer, and logs the action.
+     */
     public void removeLocationUpdates() {
         try {
             this.lm.removeUpdates(locationListenerGps);

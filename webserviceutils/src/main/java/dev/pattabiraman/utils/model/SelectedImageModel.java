@@ -10,10 +10,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 /**
- * Created by pattabi.raman on 22-08-2017.
- */
-
-public class SelectedImageModel {
+  * The SelectedImageModel class represents a model for storing information about a selected image,
+  * including its path, URI, date taken, thumbnail, size, and location.
+  */
+ public class SelectedImageModel {
     private String pathOfSelectedImage;
     private Uri uriOfImage;
     private String DATE_TAKEN;

@@ -38,7 +38,20 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
         activity = PluginBaseAppCompatActivity.this;
     }
 
-    /**/
+
+    /**
+     * The function `runtimePermissionManager` checks the status of permissions in an Android activity
+     * and calls a callback function with the result.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the permission manager is being used.
+     * @param customPermission The customPermission parameter is a List of String values that
+     * represents the permissions you want to request from the user. These permissions can be any valid
+     * Android permissions such as CAMERA, READ_EXTERNAL_STORAGE, etc.
+     * @param onGetPermissionResult It is an interface that defines a callback method to handle the
+     * result of the permission request. The method in the interface will be called with the result of
+     * the permission request, indicating whether the permission was granted or denied by the user.
+     */
     public void runtimePermissionManager(final AppCompatActivity activity, final List<String> customPermission, final GetPermissionResult onGetPermissionResult) {
         this.retryPermissionCount = 0;
         this.onGetPermissionResult = onGetPermissionResult;
@@ -100,14 +113,26 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function "proceedAfterPermissionSuccess" calls the "resultPermissionSuccess" method after a
+     * successful permission request.
+     */
     private void proceedAfterPermissionSuccess() {
         onGetPermissionResult.resultPermissionSuccess();
     }
 
+    /**
+     * The function "proceedAfterPermissionFailure" calls a method to handle the case when a permission
+     * is revoked.
+     */
     private void proceedAfterPermissionFailure() {
         onGetPermissionResult.resultPermissionRevoked();
     }
 
+    /**
+     * The function attempts to free up memory by running finalization, invoking the garbage collector,
+     * and explicitly requesting garbage collection.
+     */
     protected void freeMemory() {
         try {
             System.runFinalization();
@@ -118,6 +143,14 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function deletes the cache directory in the given context.
+     *
+     * @param context The context parameter is an object that provides access to application-specific
+     * resources and information, such as the app's package name, resources, and system services. It is
+     * typically passed as an argument to methods that require access to these resources or need to
+     * perform operations related to the application's context. In this case
+     */
     protected void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
@@ -127,6 +160,14 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function recursively deletes a directory and its contents if it exists.
+     *
+     * @param dir The "dir" parameter is a File object representing the directory that you want to
+     * delete.
+     * @return The method `deleteDir` returns a boolean value. It returns `true` if the directory or
+     * file is successfully deleted, and `false` otherwise.
+     */
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();

@@ -93,6 +93,10 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         }
     }
 
+    /**
+     * The showAlert() function displays a bottom sheet dialog with options for camera, gallery, and
+     * cancel, and performs corresponding actions when each option is clicked.
+     */
     private void showAlert() {
         final BottomSheetDialog ab = new BottomSheetDialog(activity);
         ab.setContentView(R.layout.inflate_image_picker_dialog);
@@ -157,6 +161,9 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
 
     }
 
+    /**
+     * The function checks for camera permission and if granted, opens the camera.
+     */
     private void checkForCameraPermission() {
         permissionsRequired.clear();
         permissionsRequired.add(Manifest.permission.CAMERA);
@@ -176,6 +183,14 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
     }
 
 
+    /**
+     * The function checks for storage permission and calls the appropriate callback based on the
+     * result.
+     *
+     * @param onTaskCompleted An interface that defines two methods: onTaskSuccess(JSONObject result)
+     * and onTaskFailure(Exception error). These methods are called when the task is completed
+     * successfully or when it fails, respectively.
+     */
     private void checkForStoragePermission(final OnTaskCompleted onTaskCompleted) {
         runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
             @Override
@@ -194,7 +209,11 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         });
     }
 
-    /*Open Native Camera*/
+    /**
+     * Open Native Camera<br/>
+     * The function "openCamera" opens the camera app to capture an image and saves it with a title and
+     * description.
+     */
     private void openCamera() {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
@@ -207,7 +226,8 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
     }
 
     /**
-     * @apiNote refer PluginOPEN_SINGLE_MEDIA_PICKER / PluginOPEN_MULTIPLE_MEDIA_PICKER
+     * @apiNote refer PluginOPEN_SINGLE_MEDIA_PICKER / PluginOPEN_MULTIPLE_MEDIA_PICKER<br/>
+     * The function "openGallery()" opens the gallery to select a single image.
      */
     private void openGallery() {
         Intent takePicture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -260,6 +280,13 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         }
     }
 
+    /**
+     * The function "doCrop" crops an image selected by the user using the Android camera app, with a
+     * specified aspect ratio and output size.
+     *
+     * @param picUri The picUri parameter is the URI of the image that you want to crop. It is used to
+     * set the data and type of the cropIntent.
+     */
     private void doCrop(final Uri picUri) {
         try {
 
@@ -283,6 +310,16 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         }
     }
 
+    /**
+     * The function takes an AppCompatActivity and a Bitmap as input, compresses the Bitmap into a JPEG
+     * format, inserts it into the MediaStore.Images.Media, and returns the Uri of the inserted image.
+     *
+     * @param inContext The inContext parameter is an instance of the AppCompatActivity class, which is
+     * typically the current activity or context in which the method is being called. It is used to
+     * access the content resolver and other resources of the activity.
+     * @param inImage The inImage parameter is a Bitmap object, which represents an image in memory.
+     * @return The method is returning a Uri object.
+     */
     public Uri getImageUri(final AppCompatActivity inContext, final Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -292,6 +329,12 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
 
     SelectedImageModel mSelectedImageModels = new SelectedImageModel();
 
+    /**
+     * The function sets various details of an image and finishes the activity.
+     *
+     * @param resultUri The resultUri parameter is a Uri object that represents the location of the
+     * selected image.
+     */
     private void setDetailsOfImage(final Uri resultUri) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
@@ -306,6 +349,12 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         finish();
     }
 
+    /**
+     * The function returns the current activity, and if it is null, it assigns the value of
+     * PluginSelectImageActivity.this to it.
+     *
+     * @return The method is returning the activity object.
+     */
     public Activity getActivity() {
         if (activity == null) {
             activity = PluginSelectImageActivity.this;

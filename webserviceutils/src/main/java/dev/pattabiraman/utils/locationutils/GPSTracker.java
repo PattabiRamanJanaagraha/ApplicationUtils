@@ -36,7 +36,11 @@ import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.permissionutils.GetPermissionResult;
 import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
 
-public class GPSTracker extends Service implements LocationListener {
+ /**
+  * The GPSTracker class is a Java class that extends the Service class and implements the
+  * LocationListener interface, allowing it to track the user's GPS location.
+  */
+ public class GPSTracker extends Service implements LocationListener {
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
     // The minimum time between updates in milliseconds
@@ -56,6 +60,10 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
+    /**
+     * The function `getLocation()` checks if the GPS or network provider is enabled and if so,
+     * requests location updates and retrieves the last known location.
+     */
     private void getLocation() {
         try {
             locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
@@ -131,7 +139,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Stop using GPS listener Calling this function will stop using GPS in your
-     * app
+     * app.<br/>
+     * The function `stopUsingGPS()` checks for required permissions and removes GPS updates if
+     * permission is granted.
      */
     public void stopUsingGPS() {
         if (locationManager != null) {
@@ -157,7 +167,11 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     /**
-     * Function to get latitude
+     * Function to get latitude.<br/>
+     * The function returns the latitude value from the location object if it is not null, otherwise it
+     * returns the latitude value stored in the PluginAppConstant class.
+     *
+     * @return The latitude value stored in the PluginAppConstant class.
      */
     public double getLatitude() {
         if (location != null) {
@@ -168,7 +182,11 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     /**
-     * Function to get longitude
+     * Function to get longitude.<br/>
+     * The function returns the longitude value from the location object if it is not null, otherwise
+     * it returns the longitude value stored in the PluginAppConstant class.
+     *
+     * @return The method is returning the longitude value stored in the PluginAppConstant class.
      */
     public double getLongitude() {
         if (location != null) {

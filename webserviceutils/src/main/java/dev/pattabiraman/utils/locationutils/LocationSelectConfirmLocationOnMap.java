@@ -138,7 +138,10 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         }
     }
 
+    /**
+     *   sets up a toolbar and customizes its title.*/
     @SuppressWarnings("deprecation")
+
     private void setToolbarAndCustomizeTitle() {
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -156,6 +159,10 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
 
     }
 
+    /**
+     * The function initiates the Google Maps by finding the map fragment and asynchronously loading
+     * the map.
+     */
     private void initiateGoogleMaps() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -165,6 +172,10 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
 
     List<String> permissionsRequired = new ArrayList<>();
 
+    /**
+     * The function `checkForLocationPermission()` checks for location permissions and performs actions
+     * based on the permission result.
+     */
     private void checkForLocationPermission() {
         permissionsRequired.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         permissionsRequired.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -199,6 +210,11 @@ public class LocationSelectConfirmLocationOnMap extends PluginBaseAppCompatActiv
         });
     }
 
+    /**
+     * The function getCurrentLocation retrieves the current location of the device using the
+     * MyLocation class and updates the latitude and longitude variables in the PluginAppConstant
+     * class.
+     */
     private void getCurrentLocation() {
         try {
             LocationResult locationResult = new LocationResult() {

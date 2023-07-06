@@ -6,7 +6,10 @@
 
 package dev.pattabiraman.utils.model;
 
-public class HTTPCodeModel {
+ /**
+  * The HTTPCodeModel class defines constants for various HTTP status codes.
+  */
+ public class HTTPCodeModel {
     public static final int HTTP_SUCCESS_OK=200;
     public static final int HTTP_SUCCESS_OK_=201;
     public static final int HTTP_UN_AUTHORIZED=403;

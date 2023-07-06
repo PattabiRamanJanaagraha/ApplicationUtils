@@ -34,11 +34,7 @@ import dev.pattabiraman.utils.callback.OnResponseListener;
 import dev.pattabiraman.utils.model.HTTPCodeModel;
 
 
-/**
- * Created by pattabi.raman on 20-02-2018.
- */
-
-public class PluginWebserviceHelper {
+ public class PluginWebserviceHelper {
     private static PluginWebserviceHelper mInstance;
 
     public static PluginWebserviceHelper getInstance() {
@@ -58,16 +54,27 @@ public class PluginWebserviceHelper {
 
     public static final String TAG = PluginWebserviceHelper.class.getSimpleName();
 
-    /**
-     * @param activity               activity of calling API
-     * @param methodType             either METHOD_GET, METHOD_POST,METHOD_PUT,METHOD_DELETE,METHOD_PATCH
-     * @param url                    API url
-     * @param params                 HashMap<String,String> if other than GET/PATCH method
-     * @param onResponseListener     OnResponseListener callback for success/failure response
-     * @param isToShowProgressDialog isToShowProgressDialog boolean-value if needed to show loader
-     * @apiNote set this method to true to trace log. if this method is not called, by default no traces are logged in logcat view
-     */
 
+    /**
+     * The function `runWebService` is used to make HTTP requests (GET, POST, PUT, PATCH, DELETE) to a
+     * specified URL with optional parameters, headers, and progress dialog.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It is used
+     * to access the current activity context and perform UI-related operations if needed.
+     * @param methodType The methodType parameter is an integer that represents the type of HTTP method
+     * to be used in the web service request. It can have the following values:
+     * @param url The URL of the web service that you want to call.
+     * @param params A HashMap containing the parameters to be sent in the request. The keys represent
+     * the parameter names, and the values represent the parameter values.
+     * @param onResponseListener The `onResponseListener` is an interface that allows you to handle the
+     * response from the web service. It typically includes methods such as `onSuccess` and `onFailure`
+     * to handle the success and failure scenarios respectively. You can implement this interface and
+     * pass it as a parameter to the `run
+     * @param isToShowProgressDialog A boolean value indicating whether or not to show a progress
+     * dialog while the web service request is being processed.
+     * @param requestHeaders A HashMap containing the headers to be included in the HTTP request. The
+     * keys represent the header names, and the values represent the header values.
+     */
     public void runWebService(final AppCompatActivity activity, final int methodType, final String url, HashMap<String, String> params, OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         AppHelperMethods.getInstance(activity).traceLog("requestURL", url);
         if (params != null)
@@ -96,6 +103,22 @@ public class PluginWebserviceHelper {
         }
     }
 
+    /**
+     * The function `doPatch` sends a PATCH request to a specified URL with optional request headers,
+     * handles the response, and provides callbacks for success and failure.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It is used
+     * to access the current activity context and perform UI-related operations.
+     * @param url The URL to send the PATCH request to.
+     * @param onResponseListener The `onResponseListener` is an interface that defines two methods:
+     * `OnResponseSuccess` and `OnResponseFailure`. These methods are called when the response from the
+     * server is successful or when there is a failure, respectively. The `OnResponseSuccess` method is
+     * called with the response as a
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * the request is being processed.
+     * @param requestHeaders A HashMap containing the request headers to be included in the PATCH
+     * request.
+     */
     private static void doPatch(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -180,6 +203,25 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(jsonObjReq, PluginAppUtils.TAG);
     }
 
+    /**
+     * The function performs a JSON POST request using Volley library in Android, including handling of
+     * response and error cases, and optional display of progress dialog.
+     *
+     * @param activity The activity parameter is the reference to the current activity in which the
+     * request is being made. It is usually passed as "this" from the calling activity.
+     * @param url The URL to which the JSON request will be sent.
+     * @param requestBodyParams The requestBodyParams parameter is a JSONObject that contains the
+     * parameters to be sent in the request body of the JSON request. These parameters can be used to
+     * pass data to the server for processing.
+     * @param onResponseListener The onResponseListener is an interface that defines two methods:
+     * OnResponseSuccess and OnResponseFailure. These methods will be called when the JSON request is
+     * successful or when there is an error in the response, respectively. You can implement this
+     * interface in your activity or fragment to handle the response accordingly.
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * the request is being processed.
+     * @param requestHeaders A HashMap containing the headers to be included in the request. The keys
+     * represent the header names, and the values represent the header values.
+     */
     public void doPostJSONRequest(final AppCompatActivity activity, final String url, final JSONObject requestBodyParams, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -234,6 +276,23 @@ public class PluginWebserviceHelper {
         VolleySingleton.getInstance(activity).addToRequestQueue(request_json);
     }
 
+    /**
+     * The `doPut` function is a Java method that performs a PUT request to a specified URL with
+     * optional parameters, headers, and callbacks, and handles the response accordingly.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the method is being called.
+     * @param url The URL to which the PUT request will be sent.
+     * @param params A HashMap containing the parameters to be sent in the PUT request.
+     * @param onResponseListener The `onResponseListener` is an interface that defines two methods:
+     * `OnResponseSuccess` and `OnResponseFailure`. These methods are called when the response from the
+     * server is successful or when there is an error, respectively. You can implement this interface
+     * in your activity or fragment to handle the response
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * the request is being processed.
+     * @param requestHeaders A HashMap containing the headers to be included in the PUT request. The
+     * keys represent the header names, and the values represent the header values.
+     */
     private void doPut(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -289,6 +348,23 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
+    /**
+     * The function `doDelete` sends a DELETE request to a specified URL with optional parameters and
+     * headers, and handles the response accordingly.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the method is being called.
+     * @param url The URL of the API endpoint you want to send the DELETE request to.
+     * @param params A HashMap containing the parameters to be sent in the DELETE request.
+     * @param onResponseListener The `onResponseListener` is an interface that defines two methods:
+     * `OnResponseSuccess` and `OnResponseFailure`. These methods are called when the response from the
+     * server is successful or when there is a failure, respectively. You can implement this interface
+     * in your activity or fragment to handle the response
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * the request is being processed.
+     * @param requestHeaders A HashMap containing the headers to be included in the DELETE request. The
+     * keys represent the header names, and the values represent the header values.
+     */
     private void doDelete(final AppCompatActivity activity, final String url, final HashMap<String, String> params, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -339,6 +415,21 @@ public class PluginWebserviceHelper {
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
 
+    /**
+     * The above function is a Java method that performs a GET request to a specified URL, handles the
+     * response, and includes caching functionality.
+     *
+     * @param activity The activity parameter is the current instance of the AppCompatActivity class.
+     * It is used to access the activity context and perform UI-related operations.
+     * @param url The URL of the API endpoint you want to make a GET request to.
+     * @param onResponseListener The `onResponseListener` is an interface that defines two methods:
+     * `OnResponseSuccess` and `OnResponseFailure`. These methods are called when the response is
+     * successful or when there is a failure in the response, respectively. You can implement this
+     * interface to handle the response data or any error that
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * the request is being made.
+     * @param requestHeaders A HashMap containing the headers to be included in the request.
+     */
     private static void doGet(final AppCompatActivity activity, final String url, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
@@ -475,6 +566,24 @@ public class PluginWebserviceHelper {
 
     }
 
+    /**
+     * The `doPost` function is a Java method that sends a POST request to a specified URL with request
+     * parameters and headers, and handles the response using a listener.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It is used
+     * to access the activity context and perform UI-related operations.
+     * @param url The URL to which the POST request will be sent.
+     * @param requestParams A HashMap containing the request parameters to be sent in the POST request.
+     * The keys represent the parameter names and the values represent the parameter values.
+     * @param onResponseListener The `onResponseListener` is an interface that defines two methods:
+     * `OnResponseSuccess` and `OnResponseFailure`. These methods are called when the response from the
+     * server is successful or when there is a failure, respectively. You can implement this interface
+     * to handle the response in your activity or fragment
+     * @param isToShowProgressDialog A boolean value indicating whether to show a progress dialog while
+     * making the request.
+     * @param requestHeaders A HashMap containing the headers to be included in the request. The keys
+     * are the header names and the values are the header values.
+     */
     private static void doPost(final AppCompatActivity activity, final String url, final HashMap<String, String> requestParams, final OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
         if (isToShowProgressDialog) {
             PluginAppUtils.getInstance(activity).showProgressDialog(activity, true);
