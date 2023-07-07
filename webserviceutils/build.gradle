@@ -28,7 +28,7 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 33
-        versionName '1.0.3'
+        versionName '1.0.4'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         Properties properties = new Properties()
@@ -59,7 +59,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.PattabiRamanJanaagraha'
             artifactId = 'ApplicationUtils'
-            version = '1.0.3'
+            version = '1.0.4'
 
             afterEvaluate {
                 from components.release
