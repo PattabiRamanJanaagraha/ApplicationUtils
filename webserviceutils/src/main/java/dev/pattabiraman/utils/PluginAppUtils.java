@@ -9,7 +9,6 @@ package dev.pattabiraman.utils;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,27 +28,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.Objects;
 
 import dev.pattabiraman.utils.callback.OnButtonClick;
 import dev.pattabiraman.utils.locationutils.GPSTracker;
-import dev.pattabiraman.utils.model.HTTPCodeModel;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.LruBitmapCache;
 import dev.pattabiraman.webserviceutils.R;
@@ -165,7 +156,7 @@ public class PluginAppUtils {
      * is an error that occurred during a Volley network request. It contains information about the
      * error, such as the network response and any error messages.
      */
-    public void handleVolleyError(final AppCompatActivity act,
+   /* public void handleVolleyError(final AppCompatActivity act,
                                   final VolleyError volleyError) {
         NetworkResponse response = volleyError.networkResponse;
         JSONObject responseObject = new JSONObject();
@@ -256,8 +247,8 @@ public class PluginAppUtils {
                             .showToast(act, "Session Expired, Login again");
                     break;
                 case HTTPCodeModel.HTTP_SERVER_ERROR:
-                   /* AppHelperMethods.getInstance(activity).showToast(act,
-                            responseObject.optString("message"));*/
+                   *//* AppHelperMethods.getInstance(activity).showToast(act,
+                            responseObject.optString("message"));*//*
                     AppHelperMethods.getInstance(activity).traceLog("error", responseObject + "");
                     break;
                 case HTTPCodeModel.HTTP_CONNECTION_TIME_OUT:
@@ -278,7 +269,7 @@ public class PluginAppUtils {
                         .showToast(act, volleyError.getMessage());
             }
         }
-    }
+    }*/
 
     private static Dialog progressDialog;
 
