@@ -31,7 +31,6 @@ import java.util.Map;
 import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.callback.OnResponseListener;
-import dev.pattabiraman.utils.model.HTTPCodeModel;
 
 
 public class PluginWebserviceHelper {
@@ -129,47 +128,10 @@ public class PluginWebserviceHelper {
             }
             AppHelperMethods.getInstance(activity).traceLog("URL : ", url);
             AppHelperMethods.getInstance(activity).traceLog("Response : ", response + "");
-            if (response.has("httpCode")) {
-                if (response.optInt("httpCode") == 200 || response.optInt("httpCode") == 201) {
-                    try {
-                        onResponseListener.OnResponseSuccess(response);
-                        PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        onResponseListener.OnResponseFailure(response);
-                        PluginAppUtils.getInstance(activity).showToast(activity, e.getMessage());
-                    }
-                } else if (response.optInt("httpCode") == HTTPCodeModel.HTTP_UNAUTHENTICATED) {
-                    PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
-                    try {
-                        onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", response.optInt("httpCode")));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    PluginAppUtils.getInstance(activity).cancelPendingRequests(PluginAppUtils.TAG);
-                } else if (response.optInt("httpCode") == 404) {
 
-                    PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
+            onResponseListener.OnResponseSuccess(response);
+            PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
 
-                    onResponseListener.OnResponseFailure(response);
-                } else {
-                    try {
-                        onResponseListener.OnResponseFailure(response);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        PluginAppUtils.getInstance(activity).showToast(activity, e.getMessage());
-                    }
-                }
-            } else {
-                try {
-                    onResponseListener.OnResponseSuccess(response);
-                    PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    PluginAppUtils.getInstance(activity).showToast(activity, e.getMessage());
-                    onResponseListener.OnResponseFailure(response);
-                }
-            }
         }, volleyError -> {
             NetworkResponse response = volleyError.networkResponse;
             if (isToShowProgressDialog) {
@@ -253,14 +215,10 @@ public class PluginWebserviceHelper {
                 }
                 NetworkResponse response = error.networkResponse;
                 try {
-                    if (response != null) {
-                        PluginAppUtils.getInstance(activity).showToast(activity, new JSONObject(new String(response.data)).optString("message"));
-                    }
-                    onResponseListener.OnResponseFailure(new JSONObject());
-                } catch (JSONException e) {
+                    onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", response.statusCode).put("payload", response));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }) {
 
@@ -303,21 +261,8 @@ public class PluginWebserviceHelper {
                 if (isToShowProgressDialog) {
                     PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
                 }
-                if (response.has("httpCode")) {
-                    if (response.optInt("httpCode") == 200 || response.optInt("httpCode") == 201) {
-                        PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
-                        onResponseListener.OnResponseSuccess(response);
-                        PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
-                    } else {
-                        onResponseListener.OnResponseFailure(response);
-                        PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
-                    }
-                } else {
-                    PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
-                    onResponseListener.OnResponseSuccess(response);
-                    PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
+                onResponseListener.OnResponseSuccess(response);
 
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -325,7 +270,7 @@ public class PluginWebserviceHelper {
             if (isToShowProgressDialog) {
                 PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
             }
-//            PluginAppUtils.getInstance(activity).handleVolleyError(activity, error);
+
             NetworkResponse response = error.networkResponse;
             try {
                 onResponseListener.OnResponseFailure(new JSONObject().put("httpCode", response.statusCode).put("payload", response));
@@ -374,9 +319,7 @@ public class PluginWebserviceHelper {
                 if (isToShowProgressDialog) {
                     PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
                 }
-                PluginAppUtils.getInstance(activity).showToast(activity, response.optString("message"));
                 onResponseListener.OnResponseSuccess(response);
-                PluginAppUtils.getInstance(activity).showProgressDialog(activity, false);
 
             } catch (Exception e) {
                 e.printStackTrace();
