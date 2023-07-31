@@ -188,8 +188,8 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
      * result.
      *
      * @param onTaskCompleted An interface that defines two methods: onTaskSuccess(JSONObject result)
-     * and onTaskFailure(Exception error). These methods are called when the task is completed
-     * successfully or when it fails, respectively.
+     *                        and onTaskFailure(Exception error). These methods are called when the task is completed
+     *                        successfully or when it fails, respectively.
      */
     private void checkForStoragePermission(final OnTaskCompleted onTaskCompleted) {
         runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
@@ -244,6 +244,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
 //                    doCrop(fileUri);
                 } else if (resultCode == RESULT_CANCELED) {
                     PluginAppUtils.getInstance(activity).showToast(activity, "You have cancelled image selection");
+                    activity.finish();
                 } else {
 //                    AppHelperMethods.getInstance(activity).showToast(activity, "Please select an image");
                     if (clickTypeAutomate != PluginAppConstant.CLICK_TYPE_NONE) {
@@ -285,7 +286,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
      * specified aspect ratio and output size.
      *
      * @param picUri The picUri parameter is the URI of the image that you want to crop. It is used to
-     * set the data and type of the cropIntent.
+     *               set the data and type of the cropIntent.
      */
     private void doCrop(final Uri picUri) {
         try {
@@ -315,9 +316,9 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
      * format, inserts it into the MediaStore.Images.Media, and returns the Uri of the inserted image.
      *
      * @param inContext The inContext parameter is an instance of the AppCompatActivity class, which is
-     * typically the current activity or context in which the method is being called. It is used to
-     * access the content resolver and other resources of the activity.
-     * @param inImage The inImage parameter is a Bitmap object, which represents an image in memory.
+     *                  typically the current activity or context in which the method is being called. It is used to
+     *                  access the content resolver and other resources of the activity.
+     * @param inImage   The inImage parameter is a Bitmap object, which represents an image in memory.
      * @return The method is returning a Uri object.
      */
     public Uri getImageUri(final AppCompatActivity inContext, final Bitmap inImage) {
@@ -333,7 +334,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
      * The function sets various details of an image and finishes the activity.
      *
      * @param resultUri The resultUri parameter is a Uri object that represents the location of the
-     * selected image.
+     *                  selected image.
      */
     private void setDetailsOfImage(final Uri resultUri) {
         Calendar cal = Calendar.getInstance();

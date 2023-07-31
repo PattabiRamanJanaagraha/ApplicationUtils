@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*pick a date*/
         binding.btnPickADate.setOnClickListener(v -> {
-            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103).putExtra("isToSelectTime", true), 103);
+            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103).putExtra("isToSelectTime", true).putExtra("dateSelectionMode",PluginAppConstant.DATE_SELECTION_MODE_ANY).putExtra("numberOfDays",7), 103);
         });
 
         /*otpless login */

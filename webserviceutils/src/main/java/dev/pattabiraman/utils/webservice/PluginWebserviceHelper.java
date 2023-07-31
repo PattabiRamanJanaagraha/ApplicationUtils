@@ -8,6 +8,11 @@ package dev.pattabiraman.utils.webservice;
 
 import static dev.pattabiraman.utils.PluginAppConstant.MY_SOCKET_TIMEOUT_MS;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Cache;
@@ -75,30 +80,32 @@ public class PluginWebserviceHelper {
      *                               keys represent the header names, and the values represent the header values.
      */
     public void runWebService(final AppCompatActivity activity, final int methodType, final String url, HashMap<String, String> params, OnResponseListener onResponseListener, final boolean isToShowProgressDialog, final HashMap<String, String> requestHeaders) {
-        AppHelperMethods.getInstance(activity).traceLog("requestURL", url);
-        if (params != null)
-            AppHelperMethods.getInstance(activity).traceLog("requestParams", params.toString());
-        switch (methodType) {
-            case METHOD_GET:
-                doGet(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
-                break;
-            case METHOD_POST:
+        if (isInternetConnected(activity)) {
+            AppHelperMethods.getInstance(activity).traceLog("requestURL", url);
+            if (params != null)
+                AppHelperMethods.getInstance(activity).traceLog("requestParams", params.toString());
+            switch (methodType) {
+                case METHOD_GET:
+                    doGet(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
+                    break;
+                case METHOD_POST:
 
-                doPost(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
-                break;
-            case METHOD_PUT:
+                    doPost(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
+                    break;
+                case METHOD_PUT:
 
-                doPut(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
-                break;
-            case METHOD_PATCH:
-                doPatch(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
-                break;
-            case METHOD_DELETE:
+                    doPut(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
+                    break;
+                case METHOD_PATCH:
+                    doPatch(activity, url, onResponseListener, isToShowProgressDialog, requestHeaders);
+                    break;
+                case METHOD_DELETE:
 
-                doDelete(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
-                break;
-            default:
-                break;
+                    doDelete(activity, url, params, onResponseListener, isToShowProgressDialog, requestHeaders);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -530,5 +537,25 @@ public class PluginWebserviceHelper {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         PluginAppUtils.getInstance(activity).addToRequestQueue(stringRequest, PluginAppUtils.TAG);
     }
+
+    private boolean isInternetConnected(final AppCompatActivity context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        NetworkCapabilities capabilities = null;  // need ACCESS_NETWORK_STATE permission
+        capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        boolean isConnected, isOnline = false;
+        if (capabilities != null) {
+            isOnline = capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+            isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting() && isOnline;
+        } else {
+            isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+
+        if (!isConnected) {
+            PluginAppUtils.getInstance(context).showToast(context, "Internet is slow/disconnected");
+        }
+        return isConnected;
+    }
+
 
 }

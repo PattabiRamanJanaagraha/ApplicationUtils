@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import dev.pattabiraman.utils.AppHelperMethods;
+import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.model.DateRangeFilterModel;
 import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
@@ -27,14 +28,17 @@ import dev.pattabiraman.webserviceutils.databinding.ActivityCalendarSelectADateB
 
 /**
  * @author Pattabi
- * @apiNote Must send intent.putExtra("isToSelectTime",Boolean)
+ * @apiNote Must send <br/>intent.putExtra("isToSelectTime",Boolean);<br/>
+ * intent.putExtra("dateSelectionMode",int) -> DATE_SELECTION_MODE_PAST_ANY / DATE_SELECTION_MODE_FUTURE_ANY/ DATE_SELECTION_MODE_PAST_FUTURE_WITHIN_DAYS -> numberOfDays is mandatory / DATE_SELECTION_MODE_ANY  <br/>
+ * intent.putExtra("numberOfDays",int)
  */
 public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivity {
     private AppCompatActivity mActivity;
     private ActivityCalendarSelectADateBinding binding;
     private Date chosenDate;
-    private int requestCode;
+    private int requestCode, numberOfDays;
     private boolean isToSelectTime = false;
+    private int dateSelectionMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,19 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
         setContentView(binding.getRoot());
         mActivity = CalendarSinglaDateSelectActivity.this;
         requestCode = getIntent().getExtras().getInt("requestCode");
+
+        try {
+            dateSelectionMode = getIntent().getExtras().getInt("dateSelectionMode");
+        } catch (Exception e) {
+            dateSelectionMode = PluginAppConstant.DATE_SELECTION_MODE_ANY;
+        }
+
+        try {
+            numberOfDays = getIntent().getExtras().getInt("numberOfDays");
+        } catch (Exception e) {
+            numberOfDays = 0;
+            e.printStackTrace();
+        }
 
         /*is time picker to be configured */
         try {
@@ -67,7 +84,7 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
                 } else {
                     showTimePickerDialog(PluginCalendarConstants.getInstance().mSelectedDateModel);
                 }
-            });
+            }, dateSelectionMode, numberOfDays);
         });
 
         binding.etDate.performClick();
@@ -84,6 +101,7 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
 
     /**
      * The function checks if a date is selected and displays a toast message if it is not.
+     *
      * @return is selected date valid
      */
     public boolean onValidation() {
@@ -99,8 +117,8 @@ public class CalendarSinglaDateSelectActivity extends PluginBaseAppCompatActivit
      * time, which is then used to update the chosenDate and mSelectedDateModel variables.
      *
      * @param mSelectDateModel The `mSelectDateModel` parameter is an instance of the
-     * `DateRangeFilterModel` class. It is used to store and manipulate the selected date and time
-     * values.
+     *                         `DateRangeFilterModel` class. It is used to store and manipulate the selected date and time
+     *                         values.
      */
     private void showTimePickerDialog(DateRangeFilterModel mSelectDateModel) {
         // Get the TimePicker view

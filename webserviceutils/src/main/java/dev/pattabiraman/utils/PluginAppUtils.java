@@ -16,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -59,7 +60,7 @@ public class PluginAppUtils {
      * already exist.
      *
      * @param appCompaitActivity The parameter "appCompaitActivity" is of type AppCompatActivity and
-     * represents the current activity in which the PluginAppUtils instance is being created.
+     *                           represents the current activity in which the PluginAppUtils instance is being created.
      * @return The method is returning an instance of the PluginAppUtils class.
      */
     public static PluginAppUtils getInstance(AppCompatActivity appCompaitActivity) {
@@ -106,11 +107,11 @@ public class PluginAppUtils {
      * policy.
      *
      * @param req The req parameter is an instance of the Request class, which represents a network
-     * request to be added to the request queue. It can be any type of request, such as a
-     * StringRequest, JsonObjectRequest, or ImageRequest.
+     *            request to be added to the request queue. It can be any type of request, such as a
+     *            StringRequest, JsonObjectRequest, or ImageRequest.
      * @param tag The "tag" parameter is a string that is used to identify the request. It can be used
-     * later to cancel or find the request in the request queue. If the "tag" parameter is empty or
-     * null, a default tag will be set.
+     *            later to cancel or find the request in the request queue. If the "tag" parameter is empty or
+     *            null, a default tag will be set.
      */
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
@@ -126,7 +127,7 @@ public class PluginAppUtils {
      * The function adds a request to the request queue and assigns a tag to it.
      *
      * @param req The parameter "req" is an instance of the Request class, which represents a network
-     * request to be made. It can be of any type, as indicated by the generic type parameter <T>.
+     *            request to be made. It can be of any type, as indicated by the generic type parameter <T>.
      */
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
@@ -137,8 +138,8 @@ public class PluginAppUtils {
      * The function cancels all pending requests with a specific tag in a request queue.
      *
      * @param tag The "tag" parameter is used to identify and cancel all pending requests that have
-     * been added to the request queue with the same tag. It can be any object that uniquely identifies
-     * a group of requests.
+     *            been added to the request queue with the same tag. It can be any object that uniquely identifies
+     *            a group of requests.
      */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
@@ -279,7 +280,7 @@ public class PluginAppUtils {
      * activity.
      *
      * @param activity The activity parameter is the reference to the current AppCompatActivity where
-     * the progress dialog will be shown.
+     *                 the progress dialog will be shown.
      * @param isToShow A boolean value indicating whether to show or hide the progress dialog.
      */
     public void showProgressDialog(final AppCompatActivity activity, final Boolean isToShow) {
@@ -347,24 +348,24 @@ public class PluginAppUtils {
      * button, and executes the appropriate callback function when the positive or negative button is
      * clicked.
      *
-     * @param activity The activity parameter is the reference to the current AppCompatActivity. It is
-     * used to display the AlertDialog on the screen.
-     * @param title The title of the alert dialog box. It is displayed at the top of the dialog box.
-     * @param message The message parameter is a string that represents the content of the alert
-     * dialog. It is the main text that will be displayed to the user.
+     * @param activity               The activity parameter is the reference to the current AppCompatActivity. It is
+     *                               used to display the AlertDialog on the screen.
+     * @param title                  The title of the alert dialog box. It is displayed at the top of the dialog box.
+     * @param message                The message parameter is a string that represents the content of the alert
+     *                               dialog. It is the main text that will be displayed to the user.
      * @param isToShowNegativeButton A boolean value indicating whether or not to show a negative
-     * button in the alert dialog. If set to true, a "Cancel" button will be displayed. If set to
-     * false, no negative button will be displayed.
-     * @param onButtonClick onButtonClick is an interface that defines two methods:
-     * onPositiveButtonClicked and onNegativeButtonClicked. These methods are called when the positive
-     * and negative buttons of the AlertDialog are clicked, respectively.
+     *                               button in the alert dialog. If set to true, a "Cancel" button will be displayed. If set to
+     *                               false, no negative button will be displayed.
+     * @param onButtonClick          onButtonClick is an interface that defines two methods:
+     *                               onPositiveButtonClicked and onNegativeButtonClicked. These methods are called when the positive
+     *                               and negative buttons of the AlertDialog are clicked, respectively.
      */
     public void showAlert(final AppCompatActivity activity, final String title, final String message,
                           final boolean isToShowNegativeButton, final
                           OnButtonClick onButtonClick) {
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
         ab.setTitle(title);
-        ab.setMessage(message);
+        ab.setMessage(Html.fromHtml(message));
         ab.setPositiveButton("Ok",
                 (dialogInterface, i) -> onButtonClick.onPositiveButtonClicked(dialogInterface));
         if (isToShowNegativeButton) {
@@ -379,10 +380,10 @@ public class PluginAppUtils {
      * formatted date string.
      *
      * @param milliSeconds The milliSeconds parameter is the number of milliseconds since January 1,
-     * 1970, 00:00:00 GMT.
-     * @param dateFormat The dateFormat parameter is a string that specifies the format in which you
-     * want the date to be displayed. It follows the pattern of the SimpleDateFormat class in Java. For
-     * example, "dd/MM/yyyy" represents the date in the format of day/month/year.
+     *                     1970, 00:00:00 GMT.
+     * @param dateFormat   The dateFormat parameter is a string that specifies the format in which you
+     *                     want the date to be displayed. It follows the pattern of the SimpleDateFormat class in Java. For
+     *                     example, "dd/MM/yyyy" represents the date in the format of day/month/year.
      * @return The method is returning a formatted date string based on the provided milliSeconds and
      * dateFormat.
      */
@@ -398,9 +399,9 @@ public class PluginAppUtils {
      * a quality of 80.
      *
      * @param activity The activity parameter is an instance of the AppCompatActivity class. It
-     * represents the current activity in which the method is being called.
+     *                 represents the current activity in which the method is being called.
      * @param imageURI The imageURI parameter is the URI (Uniform Resource Identifier) of the image
-     * file that you want to retrieve as a Bitmap.
+     *                 file that you want to retrieve as a Bitmap.
      * @return The method is returning a Bitmap object.
      */
     public Bitmap getBitmapFromURI(AppCompatActivity activity, final Uri imageURI) {
@@ -422,7 +423,7 @@ public class PluginAppUtils {
      * settings and returns false.
      *
      * @param activity The activity parameter is an instance of the AppCompatActivity class. It
-     * represents the current activity in which this method is being called.
+     *                 represents the current activity in which this method is being called.
      * @return The method returns a boolean value. If the GPS location can be obtained successfully, it
      * returns true. If the GPS or network is not enabled, it returns false.
      */
@@ -446,13 +447,26 @@ public class PluginAppUtils {
      * The function hides the keyboard on an Android activity.
      *
      * @param activity The activity parameter is an instance of the AppCompatActivity class. It
-     * represents the current activity in which the keyboard needs to be hidden.
-     * @param view The view parameter is the view that currently has focus and is displaying the
-     * keyboard.
+     *                 represents the current activity in which the keyboard needs to be hidden.
+     * @param view     The view parameter is the view that currently has focus and is displaying the
+     *                 keyboard.
      */
     public void hideKeyboard(AppCompatActivity activity, View view) {
         InputMethodManager imm = (InputMethodManager) activity
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * The function shows the keyboard for a specific view in an Android activity.
+     *
+     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
+     * represents the current activity in which the keyboard needs to be shown.
+     * @param v The view on which the keyboard should be shown.
+     */
+    public void showKeyboard(final AppCompatActivity activity, final View v) {
+        ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+
     }
 }
