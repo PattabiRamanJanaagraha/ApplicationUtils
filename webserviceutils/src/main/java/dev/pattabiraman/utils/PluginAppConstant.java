@@ -17,6 +17,7 @@ public class PluginAppConstant {
     public static String MAP_API_KEY = "";
     public static double latitude, longitude;
     public static boolean isAnyLocationSuggestionClicked;
+    public static boolean isInternetInterrupted;
     private static PluginAppConstant mInstance;
 
 
@@ -56,10 +57,11 @@ public class PluginAppConstant {
      */
     public static final int CLICK_TYPE_NONE = -4;
 
-   /**
-    * Creates a new instance of the `SelectedImageModel` class and assigning it to the `selectedImageModel`
-     variable. This allows the `selectedImageModel` variable to hold an object of type
-     `SelectedImageModel` and access its properties and methods.*/
+    /**
+     * Creates a new instance of the `SelectedImageModel` class and assigning it to the `selectedImageModel`
+     * variable. This allows the `selectedImageModel` variable to hold an object of type
+     * `SelectedImageModel` and access its properties and methods.
+     */
     public SelectedImageModel selectedImageModel = new SelectedImageModel();
 
     /**
@@ -70,4 +72,10 @@ public class PluginAppConstant {
     public SelectedImageModel getSelectedImageModel() {
         return selectedImageModel;
     }
+
+
+    /*
+     * Date selection mode
+     * */
+    public static final int DATE_SELECTION_MODE_PAST_NUMBER_OF_DAYS = -2, DATE_SELECTION_MODE_PAST_ANY = -1, DATE_SELECTION_MODE_FUTURE_ANY = 1, DATE_SELECTION_MODE_PAST_FUTURE_WITHIN_DAYS = 0, DATE_SELECTION_MODE_FUTURE_NUMBER_OF_DAYS = 2, DATE_SELECTION_MODE_ANY = 3;
 }

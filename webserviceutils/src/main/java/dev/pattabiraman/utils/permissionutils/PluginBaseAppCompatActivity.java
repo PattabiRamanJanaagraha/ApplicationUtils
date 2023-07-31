@@ -43,14 +43,14 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
      * The function `runtimePermissionManager` checks the status of permissions in an Android activity
      * and calls a callback function with the result.
      *
-     * @param activity The activity parameter is an instance of the AppCompatActivity class. It
-     * represents the current activity in which the permission manager is being used.
-     * @param customPermission The customPermission parameter is a List of String values that
-     * represents the permissions you want to request from the user. These permissions can be any valid
-     * Android permissions such as CAMERA, READ_EXTERNAL_STORAGE, etc.
+     * @param activity              The activity parameter is an instance of the AppCompatActivity class. It
+     *                              represents the current activity in which the permission manager is being used.
+     * @param customPermission      The customPermission parameter is a List of String values that
+     *                              represents the permissions you want to request from the user. These permissions can be any valid
+     *                              Android permissions such as CAMERA, READ_EXTERNAL_STORAGE, etc.
      * @param onGetPermissionResult It is an interface that defines a callback method to handle the
-     * result of the permission request. The method in the interface will be called with the result of
-     * the permission request, indicating whether the permission was granted or denied by the user.
+     *                              result of the permission request. The method in the interface will be called with the result of
+     *                              the permission request, indicating whether the permission was granted or denied by the user.
      */
     public void runtimePermissionManager(final AppCompatActivity activity, final List<String> customPermission, final GetPermissionResult onGetPermissionResult) {
         this.retryPermissionCount = 0;
@@ -147,9 +147,9 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
      * The function deletes the cache directory in the given context.
      *
      * @param context The context parameter is an object that provides access to application-specific
-     * resources and information, such as the app's package name, resources, and system services. It is
-     * typically passed as an argument to methods that require access to these resources or need to
-     * perform operations related to the application's context. In this case
+     *                resources and information, such as the app's package name, resources, and system services. It is
+     *                typically passed as an argument to methods that require access to these resources or need to
+     *                perform operations related to the application's context. In this case
      */
     protected void deleteCache(Context context) {
         try {
@@ -164,7 +164,7 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
      * The function recursively deletes a directory and its contents if it exists.
      *
      * @param dir The "dir" parameter is a File object representing the directory that you want to
-     * delete.
+     *            delete.
      * @return The method `deleteDir` returns a boolean value. It returns `true` if the directory or
      * file is successfully deleted, and `false` otherwise.
      */
@@ -182,6 +182,33 @@ public class PluginBaseAppCompatActivity extends AppCompatActivity {
             return dir.delete();
         } else {
             return false;
+        }
+    }
+
+    public void runtimePermissionManager(final AppCompatActivity activity, final List<String> customPermission, final GetPermissionResult onGetPermissionResult, final int uniqueRequestCodeForPermission) {
+        this.retryPermissionCount = 0;
+        this.onGetPermissionResult = onGetPermissionResult;
+        checkPermissionStatus(activity, customPermission, uniqueRequestCodeForPermission);
+    }
+
+
+    private void checkPermissionStatus(final AppCompatActivity activity, final List<String> permissionList, final int uniqueRequestCodeForPermission) {
+        String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+        boolean isAnyPermissionDenied = false;
+        // Check if the permissions are granted or not
+        boolean allPermissionsGranted = true;
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+        if (allPermissionsGranted) {
+            // Permissions are already granted, do your work here
+            proceedAfterPermissionSuccess();
+        } else {
+            // Permissions are not granted, request them
+            ActivityCompat.requestPermissions(this, permissions, uniqueRequestCodeForPermission);
         }
     }
 }

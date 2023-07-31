@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 
+import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.adapter.SearchableAdapter;
@@ -268,7 +269,7 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
      * address using the Google Places API.
      *
      * @param youraddress The address for which you want to retrieve the latitude and longitude
-     * coordinates.
+     *                    coordinates.
      */
     private void getLatLongFromAddress(final String youraddress) {
         PluginAppConstant.isAnyLocationSuggestionClicked = true;
@@ -292,8 +293,11 @@ public class LocationSearchAutoCompleteActivity extends PluginBaseAppCompatActiv
                         e.printStackTrace();
                     }
 
-                }, volleyError -> PluginAppUtils.getInstance(activity)
-                .handleVolleyError(activity, volleyError)) {
+                }, volleyError -> {
+//            PluginAppUtils.getInstance(activity)
+//                    .handleVolleyError(activity, volleyError);
+            AppHelperMethods.getInstance(activity).handleVolleyError(activity, volleyError);
+        }) {
         };
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(
                 PluginAppConstant.MY_SOCKET_TIMEOUT_MS,

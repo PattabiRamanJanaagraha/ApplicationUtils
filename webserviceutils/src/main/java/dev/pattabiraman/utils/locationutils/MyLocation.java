@@ -149,8 +149,8 @@ import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
 //          "Network : Your current location is accurate to " + location.getAccuracy() + " metres");
             locationResult.gotLocation(location, timer1, lm);
             final List<String> permissionsRequired = new ArrayList<String>();
-            permissionsRequired.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            permissionsRequired.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            permissionsRequired.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionsRequired.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
             ((PluginBaseAppCompatActivity) activity).runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
                 @SuppressLint("MissingPermission")
@@ -182,8 +182,8 @@ import dev.pattabiraman.utils.permissionutils.PluginBaseAppCompatActivity;
         @Override
         public void run() {
             final List<String> permissionsRequired = new ArrayList<String>();
-            permissionsRequired.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            permissionsRequired.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            permissionsRequired.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionsRequired.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             ((PluginBaseAppCompatActivity) activity)
                     .runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
                         @SuppressLint("MissingPermission")
