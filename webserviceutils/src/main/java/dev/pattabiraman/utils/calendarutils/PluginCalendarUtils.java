@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.callback.OnCalenderFilter;
@@ -30,20 +31,23 @@ public class PluginCalendarUtils {
     }
 
     /**
-     * select a date from calender.<br/>
-     * The function `onGetStartDateCalnder` is a Java method that displays a DatePickerDialog to allow
-     * the user to select a start date, and then calls a callback function with the selected date.
+     * The function `onGetStartDateCalnder` is a Java method that displays a DatePickerDialog and
+     * allows the user to select a start date based on different date selection modes and restrictions.
      *
-     * @param activity                   The activity parameter is an instance of the AppCompatActivity class. It
-     *                                   represents the current activity in which the date picker dialog will be displayed.
-     * @param onCalenderFilter           The onCalenderFilter parameter is an interface that allows you to define
-     *                                   a callback method to handle the selected date. It can be implemented as follows:
-     * @param isToAllowPastDateSelection
-     * @param numberOfDays
+     * @param activity          The activity parameter is the reference to the current activity or fragment
+     *                          where the date picker dialog will be shown. It should be an instance of AppCompatActivity.
+     * @param onCalenderFilter  The `onCalenderFilter` parameter is an interface that defines a method
+     *                          to handle the selected date. It is used to pass the selected date to the calling code.
+     * @param dateSelectionMode The parameter "dateSelectionMode" is an integer that determines the
+     *                          mode of date selection. It can have the following values:
+     * @param numberOfDays      The parameter "numberOfDays" is an integer that represents the number of
+     *                          days to restrict the date selection. It is used in the switch statement to determine the date
+     *                          selection mode.
      */
     public void onGetStartDateCalnder(final AppCompatActivity activity, final OnCalenderFilter onCalenderFilter, final int dateSelectionMode, int numberOfDays) {
         DatePickerDialog mStartdatePickerDialog;
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDate = calendar.get(Calendar.DAY_OF_MONTH);
@@ -60,28 +64,32 @@ public class PluginCalendarUtils {
         /*below line is to restrict date picking till particular maximim date  */
 //        mStartdatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         /**/
+        int numberOfDaysToRestrictPastDateSelection = (mDate - numberOfDays) < 0 ? ((mDate - numberOfDays) * -1) : (mDate - numberOfDays);
+        int numberOfDaysToRestrictFutureDateSelection = (mDate + numberOfDays) < 0 ? ((mDate + numberOfDays) * -1) : (mDate + numberOfDays);
         switch (dateSelectionMode) {
             case PluginAppConstant.DATE_SELECTION_MODE_PAST_ANY:
+                mStartdatePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis() - (TimeUnit.DAYS.toMillis(365 * 10)));
                 mStartdatePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 break;
             case PluginAppConstant.DATE_SELECTION_MODE_FUTURE_ANY:
                 mStartdatePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                mStartdatePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis() + (TimeUnit.DAYS.toMillis(365 * 10)));
                 break;
             case PluginAppConstant.DATE_SELECTION_MODE_PAST_FUTURE_WITHIN_DAYS:
-                calendar.set(Calendar.DAY_OF_MONTH, mDate - numberOfDays);
+                calendar.setTimeInMillis(calendar.getTimeInMillis() - (TimeUnit.DAYS.toMillis(numberOfDaysToRestrictPastDateSelection)));
                 mStartdatePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-                calendar.set(Calendar.DAY_OF_MONTH, mDate + (numberOfDays));
+                calendar.setTimeInMillis(calendar.getTimeInMillis() + TimeUnit.DAYS.toMillis(numberOfDaysToRestrictPastDateSelection + numberOfDaysToRestrictFutureDateSelection));
                 mStartdatePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 break;
             case PluginAppConstant.DATE_SELECTION_MODE_PAST_NUMBER_OF_DAYS:
-                calendar.set(Calendar.DAY_OF_MONTH, mDate - numberOfDays);
+                calendar.setTimeInMillis(calendar.getTimeInMillis() - (TimeUnit.DAYS.toMillis(numberOfDaysToRestrictPastDateSelection)));
                 mStartdatePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
                 calendar.set(Calendar.DAY_OF_MONTH, mDate);
                 mStartdatePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 break;
             case PluginAppConstant.DATE_SELECTION_MODE_FUTURE_NUMBER_OF_DAYS:
                 mStartdatePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-                calendar.set(Calendar.DAY_OF_MONTH, mDate + numberOfDays);
+                calendar.setTimeInMillis(calendar.getTimeInMillis() - (TimeUnit.DAYS.toMillis(numberOfDaysToRestrictFutureDateSelection)));
                 mStartdatePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 break;
             case PluginAppConstant.DATE_SELECTION_MODE_ANY:
