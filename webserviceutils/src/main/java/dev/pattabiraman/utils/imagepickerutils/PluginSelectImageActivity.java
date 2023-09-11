@@ -20,7 +20,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -87,10 +91,30 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                     checkForCameraPermission();
                     break;
                 case PluginAppConstant.CLICK_TYPE_GALLERY:
-                    openGallery();
+                    checkForStorageAccessPermission();
                     break;
             }
         }
+    }
+
+    private void checkForStorageAccessPermission() {
+        permissionsRequired.clear();
+        permissionsRequired.add(android.Manifest.permission.CAMERA);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
+            @Override
+            public void resultPermissionSuccess() {
+                openGallery();
+            }
+
+            @Override
+            public void resultPermissionRevoked() {
+                activity.finish();
+
+
+            }
+        });
     }
 
     /**
@@ -230,9 +254,38 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
      * The function "openGallery()" opens the gallery to select a single image.
      */
     private void openGallery() {
-        Intent takePicture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(takePicture, OPEN_SINGLE_MEDIA_PICKER);
+        /*Intent takePicture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(takePicture, OPEN_SINGLE_MEDIA_PICKER);*/
+        try {
+            pickMedia.launch(new PickVisualMediaRequest.Builder().setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE).build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    // The code is using the ActivityResultContracts.PickVisualMedia contract to register an
+    // activity result launcher. This launcher is used to launch a photo picker activity and handle the
+    // result.
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        // Callback is invoked after the user selects a media item or closes the
+        // photo picker.
+        if (uri != null) {
+            Log.d("PhotoPicker", "Selected URI: " + uri);
+            final SelectedImageModel imageModel = new SelectedImageModel();
+            imageModel.setUriOfImage(uri);
+            imageModel.setArrPath(uri.getPath());
+            if (!TextUtils.isEmpty(uri.getPath())) {
+                setDetailsOfImage(uri);
+            } else {
+                if (clickTypeAutomate != PluginAppConstant.CLICK_TYPE_NONE) {
+                    activity.finish();
+                }
+            }
+
+        } else {
+            Log.d("PhotoPicker", "No media selected");
+        }
+    });
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -276,7 +329,11 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
                 }
                 break;
             default:
-                activity.finish();
+                if (data != null && data.getData() != null) {
+                    final Uri uri = data.getData();
+                    setDetailsOfImage(uri);
+                }
+                //activity.finish();
 
         }
     }
