@@ -10,10 +10,12 @@ import static dev.pattabiraman.utils.PluginAppConstant.CROP_PIC_REQUEST_CODE;
 import static dev.pattabiraman.utils.PluginAppConstant.OPEN_SINGLE_MEDIA_PICKER;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.PluginAppUtils;
 import dev.pattabiraman.utils.callback.OnTaskCompleted;
@@ -86,17 +89,37 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         if (clickTypeAutomate == PluginAppConstant.CLICK_TYPE_NONE)
             showAlert();
         else {
-            switch (clickTypeAutomate) {
-                case PluginAppConstant.CLICK_TYPE_CAMERA:
-                    checkForCameraPermission();
-                    break;
-                case PluginAppConstant.CLICK_TYPE_GALLERY:
-                    checkForStorageAccessPermission();
-                    break;
-            }
+            final List<String> permissionsRequired = new ArrayList<String>();
+            permissionsRequired.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionsRequired.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            ((PluginBaseAppCompatActivity) activity).runtimePermissionManager(activity, permissionsRequired, new GetPermissionResult() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void resultPermissionSuccess() {
+                    switch (clickTypeAutomate) {
+                        case PluginAppConstant.CLICK_TYPE_CAMERA:
+                            checkForCameraPermission();
+                            break;
+                        case PluginAppConstant.CLICK_TYPE_GALLERY:
+                            checkForStorageAccessPermission();
+                            break;
+                    }
+                }
+
+                @Override
+                public void resultPermissionRevoked() {
+                    PluginAppUtils.getInstance(activity).showToast(activity, PluginAppConstant.REQUEST_ALLOW_PERMISSION_STRING);
+
+                }
+            });
+
         }
     }
 
+    /**
+     * The function checks for storage access permission and if granted, opens the gallery, otherwise
+     * it finishes the activity.
+     */
     private void checkForStorageAccessPermission() {
         permissionsRequired.clear();
         permissionsRequired.add(android.Manifest.permission.CAMERA);
@@ -287,6 +310,51 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
         }
     });
 
+    /**
+     * @param ORIGINAL_SELECTED_FILE_URI Original URI of the gallery image before sending to cropping library
+     */
+    @SuppressLint("Range")
+    private void getDateTimeFromOriginalURIBeforeCrop(final Uri ORIGINAL_SELECTED_FILE_URI) {
+        //from gallery
+        try {
+            if (ORIGINAL_SELECTED_FILE_URI != null) {
+                final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.DISPLAY_NAME,
+                        MediaStore.Images.Media._ID, MediaStore.Images.Media.DATE_TAKEN, MediaStore.Images.Media.LATITUDE, MediaStore.Images.Media
+                        .LONGITUDE, MediaStore.Images.Media.SIZE};
+                final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+                final Cursor imageCursor = getContentResolver().query(ORIGINAL_SELECTED_FILE_URI,
+                        columns, null, null, null);
+                if (imageCursor.getCount() == 1) {
+                    imageCursor.moveToFirst();
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeInMillis(imageCursor.getLong(imageCursor
+                            .getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)));
+                    mSelectedImageModels.setSelectedImageTimeInMillis(imageCursor.getLong(imageCursor
+                            .getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)));
+                    mSelectedImageModels.setUriOfImage(ORIGINAL_SELECTED_FILE_URI);
+                    mSelectedImageModels.setDATE_TAKEN(PluginAppUtils.getInstance(activity).getDate(c.getTimeInMillis(),
+                            PluginAppConstant.DATE_FORMAT));
+                    mSelectedImageModels.setLatitude(imageCursor.getDouble(imageCursor.getColumnIndex(MediaStore.Images.Media.LATITUDE)));
+                    mSelectedImageModels.setLongitude(imageCursor.getDouble(imageCursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE)));
+
+                    /*Log values*/
+                    AppHelperMethods.getInstance(activity).traceLog("selectedImageData", "imageTimInMillis: " + mSelectedImageModels.getSelectedImageTimeInMillis() + "\n" + "uriOfImage: " + mSelectedImageModels.getUriOfImage() + "\n" + "dateTaken: " + mSelectedImageModels.getDATE_TAKEN() + "\n" + "latitude: " + mSelectedImageModels.getLatitude() + "\n" + "longitude: " + mSelectedImageModels.getLongitude());
+                    imageCursor.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*String dateTime = FileUtils.getDateTimeFromUri(this, fileUri);
+        // Check if dateTime is not null (file exists) and then use it as needed.
+        if (dateTime != null) {
+            // Now you can use 'dateTime' in your application.
+            // For example, you can display it in a TextView or log it.
+        } else {
+            // Handle the case where the file does not exist or an error occurred.
+        }*/
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,6 +399,7 @@ public class PluginSelectImageActivity extends PluginBaseAppCompatActivity {
             default:
                 if (data != null && data.getData() != null) {
                     final Uri uri = data.getData();
+                    getDateTimeFromOriginalURIBeforeCrop(uri);
                     setDetailsOfImage(uri);
                 }
                 //activity.finish();
