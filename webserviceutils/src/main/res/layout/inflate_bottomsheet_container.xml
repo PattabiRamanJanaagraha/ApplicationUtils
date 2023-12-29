@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/margin_32dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivClose"
+            android:layout_width="@dimen/margin56dp"
+            android:layout_height="@dimen/margin56dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/margin16dp"
+            android:layout_marginEnd="@dimen/margin16dp"
+            android:elevation="@dimen/horizontal_vertical_spacing"
+            android:padding="@dimen/margin16dp"
+            android:src="@drawable/round_close_24"
+            android:tint="@color/primerColorBlack"
+            app:civ_border_color="@color/white"
+            app:civ_circle_background_color="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/TextViewHeadingsTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin16dp"
+            android:gravity="center"
+            android:textColor="@color/primerColorBlack"
+            android:textSize="@dimen/textSize18dp" />
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/tvAutoCompleteSearchFromList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin16dp"
+            android:background="@drawable/edittext_bg_"
+            android:drawableStart="@mipmap/ic_plugin_search_white_24dp"
+            android:drawablePadding="@dimen/horizontal_vertical_spacing"
+            android:drawableTint="@color/tertiaryBlack"
+            android:textSize="@dimen/textSize16dp"
+            android:visibility="gone" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llLanguageItemParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin16dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/emptyView"
+                    style="@style/TextViewHeadingsTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:padding="@dimen/margin16dp"
+                    android:text="No Records Found"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDone"
+                    style="@style/ButtonTheme"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin24dp"
+                    android:enabled="true"
+                    android:paddingStart="@dimen/margin20dp"
+                    android:paddingEnd="@dimen/margin20dp"
+                    android:singleLine="true"
+                    android:text="Done"
+                    android:textSize="@dimen/textSize16dp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

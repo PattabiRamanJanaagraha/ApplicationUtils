@@ -21,6 +21,7 @@ import android.net.Uri;
     private String arrPath;
     private int selectedBgColor;
     private int drawableCheckbox;
+    private long selectedImageTimeInMillis;
 
     public boolean isThumbnailsselection() {
         return thumbnailsselection;
@@ -135,5 +136,11 @@ import android.net.Uri;
         this.uriOfImage = uriOfImage;
     }
 
+    public long getSelectedImageTimeInMillis() {
+        return selectedImageTimeInMillis;
+    }
 
+    public void setSelectedImageTimeInMillis(long selectedImageTimeInMillis) {
+        this.selectedImageTimeInMillis = selectedImageTimeInMillis;
+    }
 }
