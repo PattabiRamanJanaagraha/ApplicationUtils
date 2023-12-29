@@ -28,7 +28,7 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 33
-        versionName '1.0.6'
+        versionName '1.0.7'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
         Properties properties = new Properties()
@@ -59,7 +59,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.PattabiRamanJanaagraha'
             artifactId = 'ApplicationUtils'
-            version = '1.0.6'
+            version = '1.0.7'
 
             afterEvaluate {
                 from components.release
@@ -81,4 +81,11 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    /*for circleimageview*/
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    /*for animation components*/
+    implementation "com.airbnb.android:lottie:3.4.0"
+
 }

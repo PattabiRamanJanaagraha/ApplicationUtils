@@ -18,15 +18,22 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -45,6 +52,7 @@ import dev.pattabiraman.utils.locationutils.GPSTracker;
 import dev.pattabiraman.utils.model.SelectedImageModel;
 import dev.pattabiraman.utils.webservice.LruBitmapCache;
 import dev.pattabiraman.webserviceutils.R;
+import dev.pattabiraman.webserviceutils.databinding.InflateBottomsheetContainerBinding;
 
 public class PluginAppUtils {
     private RequestQueue mRequestQueue;
@@ -468,5 +476,88 @@ public class PluginAppUtils {
         ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
 
+    }
+
+    /**
+     * The function creates and displays a bottom sheet dialog in an Android app, with customizable
+     * title, cancelable behavior, and height.
+     *
+     * @param activity                       The activity parameter is the reference to the AppCompatActivity that is
+     *                                       currently being displayed. It is used to create the dialog and access the window manager.
+     * @param titleText                      The text to be displayed as the title above the items in the bottom sheet.
+     * @param isToSetDialogCancelable        The parameter "isToSetDialogCancelable" is a boolean value that
+     *                                       determines whether the bottom sheet dialog can be canceled by clicking outside of it. If it is
+     *                                       set to true, the dialog can be canceled by clicking outside. If it is set to false, the dialog
+     *                                       cannot be canceled by clicking outside
+     * @param isBottomSheetToFitScreenHeight A boolean value indicating whether the bottom sheet should
+     *                                       fit the height of the screen or not. If set to true, the bottom sheet will occupy the entire
+     *                                       height of the screen. If set to false, the height of the bottom sheet will be set to wrap its
+     *                                       content.
+     * @return The method is returning an instance of the `InflateBottomsheetContainerBinding` class.
+     */
+    public InflateBottomsheetContainerBinding setBottomSheetDialog(final AppCompatActivity activity, final String titleText, final boolean isToSetDialogCancelable, final boolean isBottomSheetToFitScreenHeight) {
+        final Dialog builder = new Dialog(activity);
+        final InflateBottomsheetContainerBinding inflateBottomsheetContainerBinding = InflateBottomsheetContainerBinding.inflate(LayoutInflater.from(activity));
+        builder.setContentView(inflateBottomsheetContainerBinding.getRoot());
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+
+        inflateBottomsheetContainerBinding.ivClose.setOnClickListener(v -> {
+            builder.dismiss();
+        });
+        /*title text to display above items*/
+        inflateBottomsheetContainerBinding.tvTitle.setText(Html.fromHtml(titleText));
+
+        /*setup and populate recyclerview*/
+        setRecyclerViewLayoutManager(activity, inflateBottomsheetContainerBinding.recyclerViewContainer, RecyclerView.VERTICAL, true);
+        inflateBottomsheetContainerBinding.nestedScrollViewParent.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> PluginAppUtils.getInstance(activity).hideKeyboard(activity, inflateBottomsheetContainerBinding.nestedScrollViewParent));
+        inflateBottomsheetContainerBinding.ivClose.setOnClickListener(v -> {
+            builder.dismiss();
+        });
+
+        builder.setCancelable(isToSetDialogCancelable);
+
+        Window window = builder.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.dimAmount = 0.75f;
+        wlp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        if (isBottomSheetToFitScreenHeight) {
+            wlp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        } else {
+            wlp.height = ViewGroup.LayoutParams.WRAP_CONTENT;//ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        /*show dialog at bottom of screen*/
+        window.setAttributes(wlp);
+        builder.show();
+        return inflateBottomsheetContainerBinding;
+    }
+
+
+    /**
+     * This function sets the layout manager and adds item dividers to a RecyclerView in a given
+     * orientation.
+     *
+     * @param activity                 An instance of the current activity or context where the RecyclerView is being
+     *                                 used.
+     * @param recyclerView             The RecyclerView object that needs to be set up with a layout manager and
+     *                                 item divider decoration.
+     * @param RECYCLERVIEW_ORIENTATION The orientation of the RecyclerView, which can be either
+     *                                 LinearLayoutManager.VERTICAL or LinearLayoutManager.HORIZONTAL. This determines whether the
+     *                                 items in the RecyclerView are displayed vertically or horizontally.
+     * @param isToAddItemDivider       A boolean value that determines whether or not to add a divider
+     *                                 between items in the RecyclerView. If set to true, a divider will be added. If set to false, no
+     *                                 divider will be added.
+     */
+    public void setRecyclerViewLayoutManager(final AppCompatActivity activity, final RecyclerView recyclerView, final int RECYCLERVIEW_ORIENTATION, final boolean isToAddItemDivider) {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(activity, RECYCLERVIEW_ORIENTATION, false);
+        recyclerView.setLayoutManager(layoutManager);
+        if (isToAddItemDivider)
+            recyclerView.addItemDecoration(new DividerItemDecoration(activity, LinearLayoutManager.VERTICAL));
     }
 }

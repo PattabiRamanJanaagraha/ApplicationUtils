@@ -16,6 +16,7 @@ import java.util.HashMap;
 import dev.pattabiraman.apputils.databinding.ActivityMainBinding;
 import dev.pattabiraman.apputils.databinding.InflateBottomsheetImagePickerDialogBinding;
 import dev.pattabiraman.apputils.otpless.OTPlessVerification;
+import dev.pattabiraman.apputils.profile.ProfileSettingActivity;
 import dev.pattabiraman.utils.AppHelperMethods;
 import dev.pattabiraman.utils.PluginAppConstant;
 import dev.pattabiraman.utils.calendarutils.CalendarSinglaDateSelectActivity;
@@ -84,12 +85,16 @@ public class MainActivity extends AppCompatActivity {
 
         /*pick a date*/
         binding.btnPickADate.setOnClickListener(v -> {
-            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103).putExtra("isToSelectTime", true).putExtra("dateSelectionMode",PluginAppConstant.DATE_SELECTION_MODE_PAST_ANY).putExtra("numberOfDays",7), 103);
+            startActivityForResult(new Intent(activity, CalendarSinglaDateSelectActivity.class).putExtra("requestCode", 103).putExtra("isToSelectTime", true).putExtra("dateSelectionMode", PluginAppConstant.DATE_SELECTION_MODE_PAST_ANY).putExtra("numberOfDays", 7), 103);
         });
 
         /*otpless login */
         OTPlessVerification.OTPlessVerification(activity).setOTPPressCTA(binding.whatsappLogin);
         //binding.whatsappLogin.performClick();
+
+        binding.btnViewProfileSetting.setOnClickListener(v -> {
+            startActivity(new Intent(activity, ProfileSettingActivity.class));
+        });
     }
 
     @Override
